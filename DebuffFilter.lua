@@ -13,7 +13,7 @@ local BIG = 1.45
 local BOSSDEBUFF = 1.45
 local BOSSBUFF = 1.45
 local WARNING = 1.3
-local PRIORITY = 1.1
+local PRIORITY = 1.2
 local DEBUFF = .925
 
 local class_Name, class_Filename, class_Id = UnitClass("player")
@@ -73,6 +73,7 @@ PriorityBuff[2] = {
 
 PriorityBuff[3] = {
 	"Prayer of Mending",
+	"Slow Fall",
 	"Focus Magic"
 }
 
@@ -171,6 +172,7 @@ PriorityBuff[8] = {
 
 	"Tremendous Fortitude",
 	"Gladiator's Emblem",
+	71586,
 
 	--**Class Perm Passive Buffs & DMG CDs**--
 
@@ -328,7 +330,17 @@ local Buff = {}
 for i = 1, DEFAULT_BUFF do
 	for k, v in ipairs(PriorityBuff[i]) do
 		if not Buff[i] then Buff[i] = {} end
-		Buff[i][v] = k
+		if i == 1 and UNIT_CLASS == "PRIEST" then
+			if v == GetSpellInfo(48066) then 
+				Buff[i][v] = k
+			end
+		elseif i == 1 and UNIT_CLASS == "MAGE" then
+			if v == "Arcane Intellect" or v == "Arcane Brilliance" or v == "Dalaran Brilliance" then
+				Buff[i][v] = k
+			end
+		else
+			Buff[i][v] = k
+		end
 	end
 end
 
@@ -1969,12 +1981,8 @@ function DebuffFilter:buffsRow1(scf, uid)
 	local filter = "HELPFUL"
 	for j = 1, 3 do --
 		local index, buff, backCount
-		if j == 1 and UNIT_CLASS == "PRIEST" then
+		if j == 1 and (UNIT_CLASS == "PRIEST" or UNIT_CLASS == "MAGE") then
 			index, buff, backCount = buffFilter(uid, j, filter)
-			if GetSpellInfo(buff) ~= GetSpellInfo(48066) then index = nil end
-		elseif j == 1 and UNIT_CLASS == "MAGE" then
-			index, buff, backCount = buffFilter(uid, j, filter)
-			if GetSpellInfo(buff) == GetSpellInfo(48066) then index = nil end
 		else
 			index, buff, backCount = buffFilterplayer(uid, j, filter)
 		end
