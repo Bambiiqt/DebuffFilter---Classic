@@ -12,8 +12,8 @@ local BIGGER = 1.45
 local BIG = 1.45
 local BOSSDEBUFF = 1.45
 local BOSSBUFF = 1.45
-local WARNING = 1.3
-local PRIORITY = 1.2
+local WARNING = 1.325
+local PRIORITY = 1.225
 local DEBUFF = .925
 
 local class_Name, class_Filename, class_Id = UnitClass("player")
@@ -361,52 +361,54 @@ local spellIds = {
 ---GENERAL DANGER---
 --DEATH KNIGHT
 	[49206] = "Biggest", --Ebon Gargoyle
-	[45524] = "Big", --Chains of Ice
+	[45524] = "Bigger", --Chains of Ice
 	[GetSpellInfo(49194)] = "Warning", --Unholy Blight
 
 --DRUID
 	[GetSpellInfo(58181)] = "Big", -- Infected Wounds
-	[GetSpellInfo(770)] = "Warning", -- "Faerie Fire
-	[GetSpellInfo(16857)] = "Warning", --"Faerie Fire (Feral)
-	[GetSpellInfo(5570)] = "Warning", --"Faerie Fire (Feral)
+
+	[GetSpellInfo(770)] = "Priority", -- "Faerie Fire
+	[GetSpellInfo(16857)] = "Priority", --"Faerie Fire (Feral)
+	[GetSpellInfo(5570)] = "Priority", --"Faerie Fire (Feral)
 
 
 
 --HUNTER
 	[63672]  = "Big", -- Black Arrow
 	[GetSpellInfo(63672)] = "Big", -- Black Arrow
-	[1130] = "Warning", -- Hunter's Mark
-	[GetSpellInfo(1130)] = "Warning", -- Hunter's Mark
-	[49050] = "Priority", --Aimed Shot MS
-	[GetSpellInfo(49050)]  = "Priority", --Aimed Shot MS
+	[49050] = "Warning", --Aimed Shot MS
+	[GetSpellInfo(49050)]  = "Warning", --Aimed Shot MS
+
+	[1130] = "Priority", -- Hunter's Mark
+	[GetSpellInfo(1130)] = "Priority", -- Hunter's Mark
 
 --MAGE
-	[41425] = "Warning", --Hypothermia
+	[41425] = "Priority", --Hypothermia
 
 --PALLY
-	[25771] = "Warning", --Forbearance
+	[25771] = "Priority", --Forbearance
 
 --PRIEST
-	[GetSpellInfo(48300)] = "Big", --Devouring Plague
+	[GetSpellInfo(48300)] = "Bigger", --Devouring Plague
 
 --ROGUE
-	[GetSpellInfo(13218)]  = "Priority",			-- Wound Poison (rank 1) (healing effects reduced by 50%)
-	[GetSpellInfo(13222)]  = "Priority",			-- Wound Poison II (rank 2) (healing effects reduced by 50%)
-	[GetSpellInfo(13223)]  = "Priority",			-- Wound Poison III (rank 3) (healing effects reduced by 50%)
-	[GetSpellInfo(13224)]  = "Priority",			-- Wound Poison IV (rank 4) (healing effects reduced by 50%)
-	[GetSpellInfo(27189)]  = "Priority",			-- Wound Poison V (rank 5) (healing effects reduced by 50%)
-	[GetSpellInfo(57974)]  = "Priority",			-- Wound Poison VI (rank 6) (healing effects reduced by 50%)
-	[GetSpellInfo(57975)]  = "Priority",			-- Wound Poison VII (rank 7) (healing effects reduced by 50%)
+	[GetSpellInfo(13218)]  = "Warning",			-- Wound Poison (rank 1) (healing effects reduced by 50%)
+	[GetSpellInfo(13222)]  = "Warning",			-- Wound Poison II (rank 2) (healing effects reduced by 50%)
+	[GetSpellInfo(13223)]  = "Warning",			-- Wound Poison III (rank 3) (healing effects reduced by 50%)
+	[GetSpellInfo(13224)]  = "Warning",			-- Wound Poison IV (rank 4) (healing effects reduced by 50%)
+	[GetSpellInfo(27189)]  = "Warning",			-- Wound Poison V (rank 5) (healing effects reduced by 50%)
+	[GetSpellInfo(57974)]  = "Warning",			-- Wound Poison VI (rank 6) (healing effects reduced by 50%)
+	[GetSpellInfo(57975)]  = "Warning",			-- Wound Poison VII (rank 7) (healing effects reduced by 50%)
 
 --SHAMAN
 
 --WARLOCK
 	[GetSpellInfo(48181)] = "Bigger", -- Haunt
-	[GetSpellInfo(30910)] = "Warning", -- Doom (Demo)
+--	[GetSpellInfo(30910)] = "Warning", -- Doom (Demo)
 
 --WARRIOR
 	[GetSpellInfo(772)]  = "Big", -- Rend		
-	[GetSpellInfo(12294)]  = "Priority", -- Mortal Strike
+	[GetSpellInfo(12294)]  = "Warning", -- Mortal Strike
 
 --TRINKETS
 
