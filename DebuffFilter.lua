@@ -404,7 +404,9 @@ local spellIds = {
 
 --WARLOCK
 	[GetSpellInfo(48181)] = "Bigger", -- Haunt
---	[GetSpellInfo(30910)] = "Warning", -- Doom (Demo)
+	[GetSpellInfo(25309)] = "Warning", -- Immolate
+	[GetSpellInfo(32391)] = "Warning", -- Shadow Embrace
+	[GetSpellInfo(47813)] = "Priority", -- Corruption
 
 --WARRIOR
 	[GetSpellInfo(772)]  = "Big", -- Rend		
