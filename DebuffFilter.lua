@@ -390,6 +390,7 @@ local spellIds = {
 
 --PRIEST
 	[GetSpellInfo(48300)] = "Bigger", --Devouring Plague
+	[GetSpellInfo(48125)] = "Priority", -- Shadow Word : Pain
 
 --ROGUE
 	[GetSpellInfo(13218)]  = "Warning",			-- Wound Poison (rank 1) (healing effects reduced by 50%)
