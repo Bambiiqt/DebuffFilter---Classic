@@ -1770,6 +1770,8 @@ function DebuffFilter:BuffFilter(scf, uid)
 end
 
 
+
+
 local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo, event)
 	--print(event.." "..scf.displayedUnit)
 	
