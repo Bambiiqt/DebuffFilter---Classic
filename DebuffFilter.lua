@@ -118,8 +118,8 @@ PriorityBuff[4] = {
 
 --Upper Circle Right on Icon 2
 PriorityBuff[5] = {
-	"Divine Spirit",
-	"Prayer of Spirit",
+	"Focus Magic",
+	"Dark Intent"
 }
 
 --Upper Circle Right on Icon 3
@@ -152,9 +152,9 @@ PriorityBuff[8] = {
 
 	"Prowl", 
 	"Stealth",
-	"Camouflage",
-	5384, --Feign Death
+	51755, --"Camouflage",
 	GetSpellInfo(66), --Invisibility
+	7870, --Succy Pet Invis
 
 	--**Secondary’s CD’s Given**--
 
@@ -176,15 +176,19 @@ PriorityBuff[8] = {
 
 	--**Class Perm Passive Buffs & DMG CDs**--
 
-	51271, --Unbreakable Armor
+	47568, --Empower Rune Wep
+	51271, --Pillars of Frost
 	49206, --Ebon Gargoyle
 	49028, --Dancing Rune Weapon
 	"Blood Presence",
 	"Frost Presence",
 	"Unholy Presence",
 
+	91342, --SHadow Infusion (Pet)
+
 	"Dire Bear Form", 
-	50334, --Berserk
+	50334, --Berserk (Cat)
+	--93622, --Berserk (Bear) Mangle Proc
 	"Starfall",
 	"Bear Form",   --Bear Form
 	"Tiger's Fury",
@@ -205,26 +209,34 @@ PriorityBuff[8] = {
 	12042, --Arcane Power
 	11426, --Ice Barrier
 	GetSpellInfo(11426), --Ice Barrier
+	543, --Mage Ward
 	"Mana Shield",
-	"Frost Ward",
-	"Fire Ward",
 	58833, --Mirror Image
 	58834, --Mirror Image
 	58831, --Mirror Image
-	31687, --Water Elemental
+	--31687, --Water Elemental
 	"Mage Armor",
 	"Frost Armor",
 	"Molten Armor",
-	"Ice Armor",
 
-	54428, --Divine Plea
-	31842, --Divine Illumination (talent)
+	31884, -- Avenging Wrath
+	86698, -- Guardian of Ancinet Kings (Holy)
+	86669, -- Guardian of Ancinet Kings (Holy)
+	31842, -- Divine Favor (Haste & Crit)
+	54428, -- Divine Plea
 	
+	87153, --Dark Archangel
+	81700, --Archangel
+	14751, --Chakra
 	34433,  --Disc Pet Summmon Sfiend
 	"Shadowform", --Shadowform
+	81209, --Red Chakra
+	81206, --Blue Chakra
+	81208, --Yellow Chakra
+	"Inner Will", --Inner Will
 	"Inner Fire", --Inner Fire
 
-	13750,  --Adrenline Rush
+	13750, --Adrenline Rush
 	51690, --Killing Spree
 	13877, --Blade FLurry
 	57934, --Tricksing the Target
@@ -232,13 +244,22 @@ PriorityBuff[8] = {
 
 	2645,   --Ghost Wolf
 	GetSpellInfo(16166), --Elemental Mastery (talent)
+	64701,  --Elemental Mastery (talent)
 	51533, --Feral Spirits (Summon or Buff)
+	79206, --Spirit Walkers Grace
+	55277, --Stoneclaw Shield
 
-	1122, --Infernals
+	1122,  --Infernals
+	79463, --Demon Soul Incubus Both
+	79460, --Demon Soul Fel Hunter
+	79464, --Demon Soul Void walker
+	79459, --Demon Soul Imp
+	79462, --Demon Soul Felguard
 	"Shadow Ward",
 	"Soul Link",
 
 	1719,  --Recklessness
+	85730, --Deadly Calm
 	12292, --Death Wish
 
 }
@@ -265,21 +286,21 @@ PriorityBuff[9] = {
 	--**Immunity Raid**-----------------------------------------------------------------------
 	
 	--**Healer CDs Given**--------------------------------------------------------------------
+	98007, --Spirit Link Totem
 
 	1022, --Blessing of Protection
-	5599, --Blessing of Protection
-	10278, --Blessing of Protection
 	6940, ---Hand of Sacrifice (30%)
-	64205, --Divine Sacrifice
+	70940, --Divine Guardian (Prot)
 	31821, --Aura Mastery
 
 	33206, --Pain Suppression
+	81782, --Barrier
 	47788, --Guardian Spirit
 	64901, --Hym of Hope
 	64844, --Divine Hymn Stacks
 	64843, --Divine Hymn
 
-	GetSpellInfo(53312), --Nature's Grasp (Has Stacks)
+	GetSpellInfo(16689), --Nature's Grasp (Has Stacks)
 	"Tranquility", --Tranquility (Has Stacks)
 	--98007, --Spirit Link Totem
 	--325174, --Spirit Link Totem
@@ -287,30 +308,34 @@ PriorityBuff[9] = {
 	--**Class Healing CDs**---------------------------------------------------------------------
 
 	50461, --Anti-Magic Zone
-	--97463, --Rallying Cry
+	97463, --Rallying Cry
 		
 	--**Class Healing & DMG CDs Given**---------------------------------------------------------
 	
 	"Power Infusion",
 	GetSpellInfo(2825), --Bloodlust
 	GetSpellInfo(32182), --Heroism
+	GetSpellInfo(80353), --Timelust
+	GetSpellInfo(90355), --Ancient Hysteria
+
 	29166, --Innervate
 	16191, --Mana Tide
 
 	--** Healer CDs Given w/ Short CD**---------------------------------------------------------
 
-	GetSpellInfo(552), --Abolish Disease
-	GetSpellInfo(2893), --Abolish Poison
+	--GetSpellInfo(552), --Abolish Disease
+	--GetSpellInfo(2893), --Abolish Poison
 
 	--**CC Help**-------------------------------------------------------------------------------
 
 	49016, --Unholy Frenzy
+	1038,  -- Hand of Salvation
 	6346, --Fear Ward
 	
 	--**Passive Buffs Given**------------------------------------------------------------------
-	53601, --Sacred Shield
-	--GetSpellInfo(26992), --Thorns (Friendly and Enemy spellId)
-	--974, --Earth Shield (Has Stacks)
+
+	467, --Thorns (Friendly and Enemy spellId)
+	974, --Earth Shield (Has Stacks)
 	--Beacons
 	--317920, --Concentration Aura
 	--465, --Devotion Aura
@@ -331,7 +356,7 @@ for i = 1, DEFAULT_BUFF do
 	for k, v in ipairs(PriorityBuff[i]) do
 		if not Buff[i] then Buff[i] = {} end
 		if i == 1 and UNIT_CLASS == "PRIEST" then
-			if v == GetSpellInfo(48066) then 
+			if v == GetSpellInfo(17) then 
 				Buff[i][v] = k
 			end
 		elseif i == 1 and UNIT_CLASS == "MAGE" then
@@ -354,64 +379,66 @@ local spellIds = {
 	[390435] = "Hide", --Exhaustion
 	[57724] = "Hide", --Sated
 	[6788] = "Hide", --Weakened Soul
-
 	[69127] = "Hide", --Weakened Soul
 
 
 ---GENERAL DANGER---
 --DEATH KNIGHT
 	[49206] = "Biggest", --Ebon Gargoyle
-	[45524] = "Bigger", --Chains of Ice
-	[GetSpellInfo(49194)] = "Warning", --Unholy Blight
+	--[45524] = "Bigger", --Chains of Ice
+	[50536] = "Warning", --Unholy Blight
+	[GetSpellInfo(49194) or 49194] = "Warning", --Unholy Blight
+	[GetSpellInfo(55095) or 55095] = "Priority", -- Frost Fever, Ranged & Melle Slowed 20%
 
 --DRUID
-	[GetSpellInfo(58181)] = "Big", -- Infected Wounds
+	[GetSpellInfo(58179) or 58179] = "Big", -- Infected Wounds
 
-	[GetSpellInfo(770)] = "Priority", -- "Faerie Fire
-	[GetSpellInfo(16857)] = "Priority", --"Faerie Fire (Feral)
-	[GetSpellInfo(5570)] = "Priority", --"Faerie Fire (Feral)
-
+	[91565] = "Priority", -- "Faerie Fire
+	[GetSpellInfo(770) or 770] = "Priority", -- "Faerie Fire
+	[GetSpellInfo(16857 or 16857)] = "Priority", --"Faerie Fire (Feral)
 
 
 --HUNTER
 	[63672]  = "Big", -- Black Arrow
-	[GetSpellInfo(63672)] = "Big", -- Black Arrow
-	[49050] = "Warning", --Aimed Shot MS
-	[GetSpellInfo(49050)]  = "Warning", --Aimed Shot MS
+	[3674]  = "Big", -- Black Arrow
+	[GetSpellInfo(63672) or 63672] = "Big", -- Black Arrow
+
+	[82654] = "Warning", -- Widow Venom
+	[GetSpellInfo(82654) or 82654]  = "Warning",  -- Widow Venom 25%
+
+
 
 	[1130] = "Priority", -- Hunter's Mark
-	[GetSpellInfo(1130)] = "Priority", -- Hunter's Mark
+	[GetSpellInfo(1130) or 1130] = "Priority", -- Hunter's Mark
 
 --MAGE
+	[83853] = "Biggest", --Combustion
 	[41425] = "Priority", --Hypothermia
 
 --PALLY
 	[25771] = "Priority", --Forbearance
+	[85509] = "Priority", -- Denounce
+	[20170] = "Priority", -- Seal of Justice (100% movement snare; druids and shamans might want this though)
 
 --PRIEST
-	[GetSpellInfo(48300)] = "Bigger", --Devouring Plague
-	[GetSpellInfo(48125)] = "Priority", -- Shadow Word : Pain
+	[GetSpellInfo(2944) or 2944] = "Bigger", --Devouring Plague
+	[GetSpellInfo(589) or 589] = "Priority", -- Shadow Word : Pain
 
 --ROGUE
-	[GetSpellInfo(13218)]  = "Warning",			-- Wound Poison (rank 1) (healing effects reduced by 50%)
-	[GetSpellInfo(13222)]  = "Warning",			-- Wound Poison II (rank 2) (healing effects reduced by 50%)
-	[GetSpellInfo(13223)]  = "Warning",			-- Wound Poison III (rank 3) (healing effects reduced by 50%)
-	[GetSpellInfo(13224)]  = "Warning",			-- Wound Poison IV (rank 4) (healing effects reduced by 50%)
-	[GetSpellInfo(27189)]  = "Warning",			-- Wound Poison V (rank 5) (healing effects reduced by 50%)
-	[GetSpellInfo(57974)]  = "Warning",			-- Wound Poison VI (rank 6) (healing effects reduced by 50%)
-	[GetSpellInfo(57975)]  = "Warning",			-- Wound Poison VII (rank 7) (healing effects reduced by 50%)
-
+	[GetSpellInfo(13218) or 13218]  = "Warning",				
+	[GetSpellInfo(88611) or 88611]  = "Big", -- Smokebomb	
+	[79140] = "Biggest", --Vendetta
 --SHAMAN
 
 --WARLOCK
-	[GetSpellInfo(48181)] = "Bigger", -- Haunt
-	[GetSpellInfo(25309)] = "Warning", -- Immolate
-	[GetSpellInfo(32391)] = "Warning", -- Shadow Embrace
-	[GetSpellInfo(47813)] = "Priority", -- Corruption
+	[GetSpellInfo(48181) or 48181] = "Bigger", -- Haunt
+	[GetSpellInfo(348) or 348] = "Warning", -- Immolate
+	[GetSpellInfo(32389) or 32389] = "Warning", -- Shadow Embrace
+	[GetSpellInfo(172) or 172] = "Priority", -- Corruption
 
 --WARRIOR
-	[GetSpellInfo(772)]  = "Big", -- Rend		
-	[GetSpellInfo(12294)]  = "Warning", -- Mortal Strike
+	[GetSpellInfo(94009) or 94009]  = "Big", -- Rend		
+	[GetSpellInfo(12294) or 12294]  = "Warning", -- Mortal Strike 25%
 
 --TRINKETS
 
@@ -428,248 +455,153 @@ local bgBiggerspellIds = { --Always Shows for Pets
 
 -- data from LoseControl
 local bgBigspellIds = { --Always Shows for Pets
---CC--
-	[51209] = "CC",  --Hungering Cold (talent)
-	[47481] = "CC",  --Gnaw
+	--CC--
+	[49203] = "CC", --Hungering Cold (talent)
+	[47481] = "CC",--Gnaw
+	[91800] = "CC",--Gnaw
+	[91797] = "CC", --Monstrous Blow
 
 	[33786] = "CC", 	--Cyclone
-	[5211] = "CC",	-- Bash (rank 1)
-	[6798] = "CC",	-- Bash (rank 2)
-	[8983] = "CC", 	-- Bash (rank 3)
-	[9005] = "CC",-- Pounce (rank 1)
-	[9823] = "CC", 	-- Pounce (rank 2)
-	[9827] = "CC",	-- Pounce (rank 3)
-	[27006] = "CC", 	-- Pounce (rank 4)
-	[49803] = "CC", 	-- Pounce (rank 5)
-	[22570] = "CC", 	-- Maim (rank 1)
-	[49802] = "CC", -- Maim (rank 2)
-	[GetSpellInfo(16922)] = "CC",-- Imp Starfire Stun
-	[2637] = "CC", 	-- Hibernate (rank 1)
-	[18657] = "CC", 	-- Hibernate (rank 2)
-	[18658] = "CC",	-- Hibernate (rank 3)
-
-	[1513] = "CC",			-- Scare Beast (rank 1)
-	[14326] = "CC", 			-- Scare Beast (rank 2)
-	[14327] = "CC", 			-- Scare Beast (rank 3)
-	[3355] = "CC", 		-- Freezing Trap (rank 1)
-	[14308] = "CC", 	-- Freezing Trap (rank 2)
-	[14309] = "CC",		-- Freezing Trap (rank 3)
-	[60210] = "CC",			-- Freezing Arrow Effect
-	[19386] = "CC", 			-- Wyvern Sting (talent) (rank 1)
-	[24132] = "CC", 			-- Wyvern Sting (talent) (rank 2)
-	[24133] = "CC", 			-- Wyvern Sting (talent) (rank 3)
-	[27068] = "CC", 			-- Wyvern Sting (talent) (rank 4)
-	[49011] = "CC", 			-- Wyvern Sting (talent) (rank 5)
-	[49012] = "CC", 			-- Wyvern Sting (talent) (rank 6)
-	[19503] = "CC", 			-- Scatter Shot (talent)
-
-	[24394] = "CC", 				-- Intimidation (talent)
-	[50519] = "CC", 				-- Sonic Blast (rank 1) (Bat)
-	[53564] = "CC", 				-- Sonic Blast (rank 2) (Bat)
-	[53565] = "CC", 				-- Sonic Blast (rank 3) (Bat)
-	[53566] = "CC", 				-- Sonic Blast (rank 4) (Bat)
-	[53567] = "CC", 				-- Sonic Blast (rank 5) (Bat)
-	[53568] = "CC", 				-- Sonic Blast (rank 6) (Bat)
-	[50518] = "CC", 				-- Ravage (rank 1) (Ravager)
-	[53558] = "CC", 				-- Ravage (rank 2) (Ravager)
-	[53559] = "CC", 				-- Ravage (rank 3) (Ravager)
-	[53560] = "CC", 				-- Ravage (rank 4) (Ravager)
-	[53561] = "CC", 				-- Ravage (rank 5) (Ravager)
-	[53562] = "CC", 				-- Ravage (rank 6) (Ravager)
-
-	["Polymorph"] = "CC", 
-	[118] =   "CC", 				-- Polymorph (rank 1)
-	[12824] = "CC", 				-- Polymorph (rank 2)
-	[12825] = "CC", 				-- Polymorph (rank 3)
-	[12826] = "CC", 				-- Polymorph (rank 4)
-	[28271] = "CC", 				-- Polymorph: Turtle
-	[28272] = "CC", 				-- Polymorph: Pig
-	[61305] = "CC", 				-- Polymorph: Black Cat
-	[61721] = "CC", 				-- Polymorph: Rabbit
-	[61780] = "CC", 				-- Polymorph: Turkey
-	[71319] = "CC", 				-- Polymorph: Turkey
-	[61025] = "CC", 				-- Polymorph: Serpent
-	[59634] = "CC", 				-- Polymorph - Penguin (Glyph)
-	[12355] = "CC", 				-- Impact (talent)
-	[31661] = "CC", 				-- Dragon's Breath (rank 1) (talent)
-	[33041] = "CC", 				-- Dragon's Breath (rank 2) (talent)
-	[33042] = "CC", 				-- Dragon's Breath (rank 3) (talent)
-	[33043] = "CC", 				-- Dragon's Breath (rank 4) (talent)
-	[42949] = "CC", 				-- Dragon's Breath (rank 5) (talent)
-	[42950] = "CC", 				-- Dragon's Breath (rank 6) (talent)
-	[44572] = "CC", 				-- Deep Freeze (talent)
-
-	[853] = "CC", 				-- Hammer of Justice (rank 1)
-	[5588] = "CC", 				-- Hammer of Justice (rank 2)
-	[5589] = "CC", 				-- Hammer of Justice (rank 3)
-	[10308] = "CC", 				-- Hammer of Justice (rank 4)
-	[2812] = "CC", 				-- Holy Wrath (rank 1)
-	[10318] = "CC", 				-- Holy Wrath (rank 2)
-	[27139] = "CC", 				-- Holy Wrath (rank 3)
-	[48816] = "CC", 				-- Holy Wrath (rank 4)
-	[48817] = "CC", 				-- Holy Wrath (rank 5)
-	[20170] = "CC", 				-- Stun (Seal of Justice)
-	[10326] = "CC", 				-- Turn Evil
-	[20066] = "CC", 				-- Repentance (talent)
-
-	[605] = "CC", 					-- Mind Control
-	[8122] = "CC", 				-- Psychic Scream (rank 1)
-	[8124] = "CC", 				-- Psychic Scream (rank 2)
-	[10888] = "CC", 				-- Psychic Scream (rank 3)
-	[10890] = "CC", 				-- Psychic Scream (rank 4)
-	[9484] = "CC", 				-- Shackle Undead (rank 1)
-	[9485] = "CC", 				-- Shackle Undead (rank 2)
-	[10955] = "CC", 				-- Shackle Undead (rank 3)
-	[64044] = "CC", 				-- Psychic Horror (talent)
-
-	[2094] = "CC", 				-- Blind
-	[408] = "CC", 				-- Kidney Shot (rank 1)
-	[8643] = "CC", 				-- Kidney Shot (rank 2)
-	[1833] = "CC", 				-- Cheap Shot
-	[6770] = "CC", 				-- Sap (rank 1)
-	[2070] = "CC", 				-- Sap (rank 2)
-	[11297] = "CC", 			-- Sap (rank 3)
-	[51724] = "CC", 			-- Sap (rank 4)
-	[1776] = "CC", 				-- Gouge
+	[5211] = "CC",	-- Bash
+	[9005] = "CC",	-- Pounce
+	[22570] = "CC",	-- Maim
+	[2637] = "CC",	-- Hibernate (rank 1)
 
 
-	["Hex"] = "CC", 
-	[58861] = "CC",  --Bash (Spirit Wolf)
-	[39796] = "CC",   --Stoneclaw Stun (Stoneclaw Totem)
+	[1513] = "CC",			-- Scare Beast 
+	[3355] = "CC",			-- Freezing Trap 
+	[19386] = "CC",			-- Wyvern Sting (talent) 
+	[19503] = "CC",			-- Scatter Shot (talent)
 
-	[710] = "CC",  			-- Banish (rank 1)
-	[18647] = "CC",  				-- Banish (rank 2)
-	[5782] = "CC",  					-- Fear (rank 1)
-	[6213] = "CC",  					-- Fear (rank 2)
-	[6215] = "CC",  					-- Fear (rank 3)
-	[5484] = "CC",  					-- Howl of Terror (rank 1)
-	[17928] = "CC",  				-- Howl of Terror (rank 2)
-	[6789] = "CC",  					-- Death Coil (rank 1)
-	[17925] = "CC",  					-- Death Coil (rank 2)
-	[17926] = "CC",  					-- Death Coil (rank 3)
-	[27223] = "CC",  					-- Death Coil (rank 4)
-	[47859] = "CC",  					-- Death Coil (rank 5)
-	[47860] = "CC",  					-- Death Coil (rank 6)
-	[22703] = "CC",  					-- Inferno Effect
-	[30283] = "CC",  					-- Shadowfury (rank 1) (talent)
-	[30413] = "CC",  					-- Shadowfury (rank 2) (talent)
-	[30414] = "CC",  					-- Shadowfury (rank 3) (talent)
-	[47846] = "CC",  					-- Shadowfury (rank 4) (talent)
-	[47847] = "CC",  					-- Shadowfury (rank 5) (talent)
-	[60995] = "CC",  					-- Demon Charge (metamorphosis talent)
-	[54786] = "CC",  					-- Demon Leap (metamorphosis talent)
-	[30153] = "CC",  				-- Intercept Stun (rank 1) (Felguard)
-	[30195] = "CC",  				-- Intercept Stun (rank 2) (Felguard)
-	[30197] = "CC",  				-- Intercept Stun (rank 3) (Felguard)
-	[47995] = "CC",  				-- Intercept Stun (rank 4) (Felguard)
-	[6358] = "CC",  				-- Seduction (Succubus)
-	[19482] = "CC",  				-- War Stomp (Doomguard)
-	[32752] = "CC",  				-- Summoning Disorientation
-
-	[7922] = "CC",  					-- Charge (rank 1/2/3)
-	[20253] = "CC",  				-- Intercept
-	[5246] = "CC",  				-- Intimidating Shout
-	[20511] = "CC",  				-- Intimidating Shout
-	[12809] = "CC",  			-- Concussion Blow (talent)
-	[46968] = "CC",  			-- Shockwave (talent)
-
-	[20549] = "CC", 				-- War Stomp (tauren racial)
+	[90337] = "CC",				-- Bad Manner
+	[24394] = "CC",			-- Intimidation (talent)
+	[50519] = "CC",				-- Sonic Blast (Bat)
 
 
-	[47476] = "Silence",  -- Strangulate
-	[34490] = "Silence",  --Silencing Shot
-	[18469] = "Silence", 	-- Counterspell - Silenced (rank 1) (Improved Counterspell talent)
-	[55021] = "Silence", 			-- Counterspell - Silenced (rank 2) (Improved Counterspell talent)
-	[63529] = "Silence", 		-- Silenced - Shield of the Templar (talent)
-	[15487] = "Silence", 			-- Silence (talent)
-	[1330] = "Silence",  --Garrote - Silence_Arena
-	[18425] = "Silence",  --Kick - Silenced (talent)
-	[31117] = "Silence",  --Unstable Affliction
-	[24259] = "Silence",  --Spell Lock (Felhunter)
-	[74347] = "Silence", 			-- Silenced - Gag Order (Improved Shield Bash talent)
-	[18498] = "Silence", 		-- Silenced - Gag Order (Improved Shield Bash talent
-	[25046] = "Silence", 			-- Arcane Torrent (blood elf racial)
-	[28730] = "Silence", 			-- Arcane Torrent (blood elf racial)
-	[50613] = "Silence", 			-- Arcane Torrent (blood elf racial)
+	[GetSpellInfo(118)] = "CC",
+	[118] = "CC",				-- Polymorph (rank 1)
+	[28271] = "CC",				-- Polymorph: Turtle
+	[28272] = "CC",				-- Polymorph: Pig
+	[61305] = "CC",				-- Polymorph: Black Cat
+	[61721] = "CC",				-- Polymorph: Rabbit
+	[61780] = "CC",				-- Polymorph: Turkey
+	[71319] = "CC",				-- Polymorph: Turkey
+	[61025] = "CC",				-- Polymorph: Serpent
+	[59634] = "CC",				-- Polymorph - Penguin (Glyph)
+	[82691] = "CC",				-- Ring of Frost
+	[83047] = "CC",				-- Improved Polymorph (talent)
+	[12355] = "CC",				-- Impact (talent)
+	[31661] = "CC",				-- Dragon's Breath (talent)
+	[44572] = "CC",				-- Deep Freeze (talent)
+
+	[853] = "CC",				-- Hammer of Justice
+	[2812] = "CC",				-- Holy Wrath
+	[10326] = "CC",				-- Turn Evil
+	[20066] = "CC",				-- Repentance (talent)
+
+	[8122] = "CC",				-- Psychic Scream 
+	[605] = "CC",					-- Mind Control
+	[88625] = "CC",				-- Chastise
+	[87204] = "CC",				-- Sin and Punishment
+	[64044] = "CC",				-- Psychic Horror (talent)
+
+	[2094] = "CC",				-- Blind
+	[408] = "CC",				-- Kidney Shot 
+	[1833] = "CC",				-- Cheap Shot
+	[6770] = "CC",				-- Sap 
+	[1776] = "CC",				-- Gouge
 
 
-	--[212638] = "RootPhyiscal_Special"},				-- Tracker's Net (pvp honor talent) -- Also -80% hit chance melee & range physical (CC and Root category)
+	["Hex"] = "CC",	
+	[58861] = "CC",	 		--Bash (Spirit Wolf)
+	[39796] = "CC",	 	 		--Stoneclaw Stun (Stoneclaw Totem)
+	[77505] = "CC",	 		--Earthquake
+	[76780] = "CC",	 		--Bind Elemental
 
-	[339] = "Root", -- Entangling Roots (rank 1)
-	[1062] = "Root", -- Entangling Roots (rank 2)
-	[5195] = "Root", -- Entangling Roots (rank 3)
-	[5196] = "Root", -- Entangling Roots (rank 4)
-	[9852] = "Root", -- Entangling Roots (rank 5)
-	[9853] = "Root", -- Entangling Roots (rank 6)
-	[26989] = "Root",  -- Entangling Roots (rank 7)
-	[53308] = "Root",  -- Entangling Roots (rank 8)
-	[19975] = "Root", -- Entangling Roots (rank 1) (Nature's Grasp spell)
-	[19974] = "Root", -- Entangling Roots (rank 2) (Nature's Grasp spell)
-	[19973] = "Root", -- Entangling Roots (rank 3) (Nature's Grasp spell)
-	[19972] = "Root", -- Entangling Roots (rank 4) (Nature's Grasp spell)
-	[19971] = "Root", -- Entangling Roots (rank 5) (Nature's Grasp spell)
-	[19970] = "Root", -- Entangling Roots (rank 6) (Nature's Grasp spell)
-	[27010] = "Root", -- Entangling Roots (rank 7) (Nature's Grasp spell)
-	[53313] = "Root", -- Entangling Roots (rank 8) (Nature's Grasp spell)
-	[GetSpellInfo(16979)] = "Root",	-- Feral Charge Effect (Feral Charge talent)
-	[45334] = "Root", 		-- Feral Charge Effect (Feral Charge talent)
-	[19306] = "Root", 			-- Counterattack (talent) (rank 1)
-	[20909] = "Root", 			-- Counterattack (talent) (rank 2)
-	[20910] = "Root", 			-- Counterattack (talent) (rank 3)
-	[27067] = "Root", 			-- Counterattack (talent) (rank 4)
-	[48998] = "Root", 			-- Counterattack (talent) (rank 5)
-	[48999] = "Root", 			-- Counterattack (talent) (rank 6)
-	[19185] = "Root", 			-- Entrapment (talent) (rank 1)
-	[64803] = "Root", 			-- Entrapment (talent) (rank 2)
-	[64804] = "Root", 			-- Entrapment (talent) (rank 3)
-	[4167] = "Root", 			-- Web (rank 1) (Spider)
-	[4168] = "Root", 			-- Web II
-	[4169] = "Root", 			-- Web III
-	[54706] = "Root", 			-- Venom Web Spray (rank 1) (Silithid)
-	[55505] = "Root", 			-- Venom Web Spray (rank 2) (Silithid)
-	[55506] = "Root", 			-- Venom Web Spray (rank 3) (Silithid)
-	[55507] = "Root", 			-- Venom Web Spray (rank 4) (Silithid)
-	[55508] = "Root", 			-- Venom Web Spray (rank 5) (Silithid)
-	[55509] = "Root", 			-- Venom Web Spray (rank 6) (Silithid)
-	[50245] = "Root", 			-- Pin (rank 1) (Crab)
-	[53544] = "Root", 			-- Pin (rank 2) (Crab)
-	[53545] = "Root", 			-- Pin (rank 3) (Crab)
-	[53546] = "Root", 			-- Pin (rank 4) (Crab)
-	[53547] = "Root", 			-- Pin (rank 5) (Crab)
-	[53548] = "Root", 			-- Pin (rank 6) (Crab)
-	[53148] = "Root", 			-- Charge (Bear and Carrion Bird)
-	[25999] = "Root", 			-- Boar Charge (Boar)
-	[122] = "Root", 				-- Frost Nova (rank 1)
-	[865] = "Root", 				-- Frost Nova (rank 2)
-	[6131] = "Root", 			-- Frost Nova (rank 3)
-	[10230] = "Root", 			-- Frost Nova (rank 4)
-	[27088] = "Root", 			-- Frost Nova (rank 5)
-	[42917] = "Root", 			-- Frost Nova (rank 6)
-	[12494] = "Root", 			-- Frostbite (talent)
-	[55080] = "Root", 			-- Shattered Barrier (talent)
-	[33395] = "Root", 			-- Freeze
-	[64695] = "Root",  		-- Earthgrab
-	[63685] = "Root",  		-- Freeze (Frozen Power talent)
-	[23694] = "Root",  		-- Imp Hamstring
+	[5782] = "CC",						-- Fear
+	[5484] = "CC",						-- Howl of Terror
+	[6789] = "CC",						-- Death Coil
+	[710] = "CC",						-- Banish 
+	[93986] = "CC",						-- Aura of Foreboding
+	[6358] = "CC",						-- Seduction (Succubus)
+	[89766] = "CC",						-- Axe Toss (Felguard)
+	[30283] = "CC",						-- Shadowfury (talent)
+	[54786] = "CC",						-- Demon Leap (metamorphosis talent)
+	[85387] = "CC",						-- Aftermath
 
-	[53359] = "Disarm",  			--Chimera Shot - Scorpid (talent)
-	[54404] = "Disarm", 			-- Dust Cloud (chance to hit reduced by 100%) (Tallstrider)
-	[50541] = "Disarm", 			-- Snatch (rank 1) (Bird of Prey)
-	[53537] = "Disarm", 			-- Snatch (rank 2) (Bird of Prey)
-	[53538] = "Disarm", 			-- Snatch (rank 3) (Bird of Prey)
-	[53540] = "Disarm", 			-- Snatch (rank 4) (Bird of Prey)
-	[53542] = "Disarm", 			-- Snatch (rank 5) (Bird of Prey)
-	[53543] = "Disarm", 			-- Snatch (rank 6) (Bird of Prey)
-	[64346] = "Disarm", 			-- Fiery Payback (talent)
-	[64058] = "Disarm", 			-- Psychic Horror (talent)
-	[51722] = "Disarm", 			-- Dismantle
-	[676] = "Disarm", 			-- Disarm
+
+	[22703] = "CC",						-- Inferno Effect
+	[60995] = "CC",						-- Demon Charge (metamorphosis talent)
+	[30153] = "CC",					-- Intercept Stun (rank 1) (Felguard)
+	[19482] = "CC",					-- War Stomp (Doomguard)
+	[32752] = "CC",					-- Summoning Disorientation
+
+	[7922] = "CC",					-- Charge (rank 1/2/3)
+	[20253] = "CC",				-- Intercept
+	[5246] = "CC",				-- Intimidating Shout
+	[85388] = "CC",			-- Throwdown
+	[12809] = "CC",			-- Concussion Blow (talent)
+	[46968] = "CC",			-- Shockwave (talent)
+
+	[20549] = "CC",				-- War Stomp (tauren racial)
+
+	[47476] = "Silence",-- Strangulate
+	[81261] = "Silence",-- Strangulate
+	[34490] = "Silence", --Silencing Shot
+	[18469] = "Silence",		-- Counterspell - Silenced (rank 1) (Improved Counterspell talent)
+	[55021] = "Silence",				-- Counterspell - Silenced (rank 2) (Improved Counterspell talent)
+	[31935] = "Silence",		-- Silenced - Avenger's Shield
+	[15487] = "Silence",			-- Silence (talent)
+	[1330] = "Silence",		--Garrote - Silence_Arena
+	[18425] = "Silence",		--Kick - Silenced (talent)
+	[86759] = "Silence", 		--Kick - Silenced (talent)
+	[31117] = "Silence",		--Unstable Affliction
+	[24259] = "Silence", 		--Spell Lock (Felhunter)
+	[18498] = "Silence",		-- Silenced - Gag Order (Improved Shield Bash talent
+	[25046] = "Silence",				-- Arcane Torrent (blood elf racial)
+	[28730] = "Silence",				-- Arcane Torrent (blood elf racial)
+	[50613] = "Silence",				-- Arcane Torrent (blood elf racial)
+
+
+	--[212638 , "RootPhyiscal_Special"},				-- Tracker's Net (pvp honor talent) -- Also -80% hit chance melee & range physical (CC and Root category)
+	[96294] = "Root", 	-- CHains of Ice Root
+	[96293] = "Root",	-- CHains of Ice Root
+	[339] = "Root", 	-- Entangling Roots
+	[19975] = "Root",	-- Entangling Roots (Nature's Grasp spell)
+	[16979] = "Root",	-- Feral Charge Effect (Feral Charge talent)
+	[GetSpellInfo(16979 or 16979)] = "Root",
+	[45334] = "Root",			-- Feral Charge Effect (Feral Charge talent)
+	[19306] = "Root",		-- Counterattack (talent)
+	[19185] = "Root",			-- Entrapment (talent)
+	[4167] = "Root",			-- Web (Spider)
+	[54706] = "Root",			-- Venom Web Spray (Silithid)
+	[50245] = "Root",		-- Pin (Crab)
+	[53148] = "Root",		-- Charge (Bear and Carrion Bird)
+	[25999] = "Root",			-- Boar Charge (Boar)
+	[122] = "Root",				-- Frost Nova 
+	[83302] = "Root",			-- Imp Cone of Cold
+	[55080] = "Root",			-- Shattered Barrier (talent)
+	[83073] = "Root",			-- Shattered Barrier (talent)
+	[33395] = "Root",			-- Freeze
+	[87194] = "Root",			-- Paralysis
+	[9484] = "Root",			-- Shackle Undead
+	[64695] = "Root", 		-- Earthgrab
+	[63685] = "Root",		-- Freeze (Frozen Power talent)
+	[93987] = "Root",			--Aura of Foreboding
+	[23694] = "Root",		-- Imp Hamstring
+
+	[54404] = "Disarm",			-- Dust Cloud (chance to hit reduced by 100%) (Tallstrider)
+	[50541] = "Disarm",			-- Snatch (Bird of Prey)
+	[64058] = "Disarm",			-- Psychic Horror (talent)
+	[51722] = "Disarm",			-- Dismantle
+	[676] = "Disarm",		-- Disarm
+
 
 }
 
 -- data from LoseControl Warning 
 local bgWarningspellIds = { --Always Shows for Pets
-	[GetSpellInfo(30108)] = "True", -- UA
+	[GetSpellInfo(30108) or 30108] = "True", -- UA
 	[30108] = "True", -- UA
 	[233490] = "True", -- UA
 	[233497] = "True", -- UA
@@ -685,20 +617,20 @@ local bgWarningspellIds = { --Always Shows for Pets
 	[65812] = "True", -- UA
 	[35183] = "True", -- UA
 	[211513] = "True", -- UA
-	[285142] = "True", -- UA
+	[285142] = "True", -- UAw
 	[285143] = "True", -- UA
 	[285144] = "True", -- UA
 	[285145] = "True", -- UA
 	[285146] = "True", -- UA
 	[34914] = "True", -- VT
-	[GetSpellInfo(34914)] = "True", -- VT
+	[GetSpellInfo(34914) or 34914] = "True", -- VT
 
 	[49206] = "Biggest", --Ebon Gargoyle
-	[45524] = "Big", --Chains of Ice
+	[83853] = "Biggest", --Combustion
+	[79140] = "Biggest", --Vendetta
+	--[45524] = "Big", --Chains of Ice
 
-	[GetSpellInfo(58181)] = "Big", -- Infected Wounds
-
-	[GetSpellInfo(48181)] = "Bigger", -- Warlock: Soulrot 
+	[GetSpellInfo(48181) or 48181] = "Bigger", -- Warlock: Haunt 
 
 }
 
@@ -860,11 +792,11 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local CLEUBOR = {}
 local summonedAura = {
-	[49206]  = 40, --Ebon Gargoyle
+	[49206]  = 30, --Ebon Gargoyle
 
 	[33831] = 30, --Trees
 
-	[31687] = 45, -- Water Ele DOESNT WORK SPELL CAST SUCCESS
+	--[31687] = 45, -- Water Ele DOESNT WORK SPELL CAST SUCCESS
 	[58833] = 30, --Mirror Image
 	[58834] = 30, --Mirror Image
 	[58831] = 30, --Mirror Image
@@ -873,7 +805,7 @@ local summonedAura = {
 
 	[51533] = 45, --Feral Spirits
 
-	[1122] = 60, --Warlock Infernals,  has sourceGUID (spellId and Summons are different) [spellbookid]
+
 
 
 }
@@ -885,7 +817,9 @@ local castedAura = {
 	[14185] = 2, --Preparation
 	[11958] = 2, --Cold Snap
 	[23989] = 2,  --Readiness
-	--[202770] = 8, --Fury of Elune
+	[47568] = 3, --Empower Rune Wep
+
+	[1122] = 45, --Warlock Infernals,  has sourceGUID (spellId and Summons are different) [spellbookid]
 
 
 }
@@ -897,7 +831,7 @@ function DebuffFilter:BORCLEU()
 	-----------------------------------------------------------------------------------------------------------------
 	--Summoned
 	-----------------------------------------------------------------------------------------------------------------
-	if (event == "SPELL_SUMMON") or (event == "SPELL_CREATE") or (event == "SPELL_CAST_SUCCESS" and spellId == 31687) then --Summoned CDs
+	if (event == "SPELL_SUMMON") or (event == "SPELL_CREATE") then --Summoned CDs
 		--print(event.." "..spellId.." "..GetSpellInfo(spellId).." "..(destName or ""))
 		if summonedAura[spellId] and sourceGUID and not (bit_band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == COMBATLOG_OBJECT_REACTION_HOSTILE) then
 			scf = self.cache[sourceGUID]
@@ -1018,9 +952,9 @@ function DebuffFilter:DFCLEU()
 	-----------------------------------------------------------------------------------------------------------------
 	--SmokeBomb Check
 	-----------------------------------------------------------------------------------------------------------------
-	if ((event == "SPELL_CAST_SUCCESS") and (spellId == 212182 or spellId == 359053)) then
+	if ((event == "SPELL_CAST_SUCCESS") and (spellId == 76577 or spellId == 359053)) then
 		if (sourceGUID ~= nil) then
-		local duration = 5
+		local duration = 6
 		local expirationTime = GetTime() + duration
 			if not SmokeBombAuras[sourceGUID] then
 				SmokeBombAuras[sourceGUID] = {}
@@ -1188,7 +1122,8 @@ end
 
 local function isPriority(unit, index, filter)
     local  name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, index, "HARMFUL");
-		if (spellIds[spellId] == "Priority" or spellIds[name] == "Priority") then
+	local inInstance, instanceType = IsInInstance()
+		if (spellIds[spellId] == "Priority" or spellIds[name] == "Priority") and instanceType ~="pvp" then
 		return true
 	else
 		return false
@@ -1270,7 +1205,11 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 	if filter == "HARMFUL" then 
 		debuffFrame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(debuffFrame.icon, "ANCHOR_RIGHT")
-			GameTooltip:SetUnitDebuff(uid, buffId, "HARMFUL")
+			if uid then
+				GameTooltip:SetUnitDebuff(uid, buffId, "HARMFUL")
+			else
+				GameTooltip:SetSpellByID(buffId)
+			end
 			GameTooltip:Show()
 		end)
 		debuffFrame:SetScript("OnLeave", function(self)
@@ -1279,8 +1218,12 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 	elseif filter == "HELPFUL" then 
 		debuffFrame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(debuffFrame.icon, "ANCHOR_RIGHT")
-			GameTooltip:SetUnitBuff(uid, buffId, "HELPFUL")
-			GameTooltip:Show()
+			if uid then
+				GameTooltip:SetUnitBuff(uid, buffId, "HELPFUL")
+			else
+				GameTooltip:SetSpellByID(buffId)
+			end
+				GameTooltip:Show()
 		end)
 		debuffFrame:SetScript("OnLeave", function(self)
 			GameTooltip:Hide()
@@ -1289,7 +1232,7 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 	----------------------------------------------------------------------------------------------------------------------------------------------
 	--SmokeBomb
 	----------------------------------------------------------------------------------------------------------------------------------------------
-	if spellId == 212183 then -- Smoke Bomb
+	if spellId == 88611 then -- Smoke Bomb
 		if unitCaster and SmokeBombAuras[UnitGUID(unitCaster)] then
 			if UnitIsEnemy("player", unitCaster) then --still returns true for an enemy currently under mindcontrol I can add your fix.
 				duration = SmokeBombAuras[UnitGUID(unitCaster)].duration --Add a check, i rogue bombs in stealth there is a unitCaster but the cleu doesnt regester a time
@@ -1541,8 +1484,10 @@ local function buffTooltip(buffFrame, uid, buffId, cleuSpell)
 		GameTooltip:SetOwner(buffFrame.icon, "ANCHOR_RIGHT")
 		if cleuSpell then
 			GameTooltip:SetSpellByID(cleuSpell)
-		elseif buffId then
+		elseif buffId and uid then
 			GameTooltip:SetUnitBuff(uid, buffId, "HELPFUL")
+		elseif buffId then
+			GameTooltip:SetSpellByID(buffId)
 		end
 		GameTooltip:Show()
 	end)
@@ -1558,6 +1503,8 @@ local function debuffTooltip(buffFrame, uid, buffId, cleuSpell)
 			GameTooltip:SetSpellByID(cleuSpell)
 		elseif buffId then
 			GameTooltip:SetUnitDebuff(uid, buffId, "HARMFUL")
+		elseif buffId then
+			GameTooltip:SetSpellByID(buffId)
 		end
 		GameTooltip:Show()
 	end)
@@ -1879,6 +1826,14 @@ function DebuffFilter:buffsBOR(scf, uid)
 				icon = 538745
 			end
 
+			if spellId == 55277 then 
+				icon = 136097
+			end
+
+			if spellId == 87153 then 
+				icon = "Interface\\Icons\\ability_priest_darkarchangel"
+			end
+
 			buffFrame.icon:SetTexture(icon);
 			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
 			buffFrame.icon:SetVertexColor(1, 1, 1);
@@ -2137,7 +2092,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 
 	if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or (scf.unit and scf.displayedUnit and scf.unit ~= scf.displayedUnit) or scf.debuffs == nil then
 		scf.debuffs = {};scf.buffs = {}
-		--(scf.displayedUnit, "HELPFUL", nil, HandleAura, true)
+		--AuraUtil.ForEachAura(scf.displayedUnit, "HELPFUL", nil, HandleAura, true)
 		--AuraUtil.ForEachAura(scf.displayedUnit, "HARMFUL", nil, HandleAura, true)
 		debuffsChanged = true;
 		buffsRow1 = true;
