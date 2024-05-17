@@ -19,7 +19,10 @@ local DEBUFF = .925
 local class_Name, class_Filename, class_Id = UnitClass("player")
 local UNIT_CLASS = class_Filename
 
-local BUFF_SIZE = .95
+local row1BUFF_SIZE = .95
+local SMALL_BUFF_SIZE = 1
+local BOR_BUFF_SIZE = 1
+local BOL_BUFF_SIZE = 1
 
 local NATIVE_UNIT_FRAME_HEIGHT = 36;
 local NATIVE_UNIT_FRAME_WIDTH = 72;
@@ -54,18 +57,16 @@ local playerbackCount = {
 	["Prayer of Mending"] = true,
 }
 
-PriorityBuff[14] = {
-	"Weakened Soul",
-}
 
 PriorityBuff[1] = {
 	"Power Word: Shield",
 	"Arcane Intellect",
 	"Arcane Brilliance",
 	"Dalaran Brilliance",
+	"Weakened Soul"
 }
 
-PriorityBuff[2] = {
+PriorityBuff[2]= {
 	"Renew",
 	"Dampen Magic",
 	"Amplify Magic",
@@ -80,68 +81,56 @@ PriorityBuff[3] = {
 local row1Buffs = {}
 local row1BuffsCount = 1
 for i = 1, 3 do
+	row1Buffs[i] = {}
 	for _, v in ipairs(PriorityBuff[i]) do
-		row1Buffs[v] = row1BuffsCount
+		row1Buffs[i][v] = row1BuffsCount
 		row1BuffsCount = row1BuffsCount + 1
 	end
 end
 
-	--Second Row 1
-PriorityBuff[10] = {
+--Second Row 
+PriorityBuffRow2 = {
 	--"Regrowth",
-}
-	
-	--Second Row 2
-PriorityBuff[11] = {
 	--"Wild Growth",
-}
-	--Second Row 3
-PriorityBuff[12] = {
 	--"Adaptive Swarm",
 }
 
 local row2Buffs = {}
 local row2BuffsCount = 1
-for i = 10, 12 do
-	for _, v in ipairs(PriorityBuff[i]) do
-		row2Buffs[v] = row2BuffsCount
-		row2BuffsCount = row2BuffsCount + 1
-	end
+for _, v in ipairs(PriorityBuffRow2) do
+	row2Buffs[v] = row2BuffsCount
+	row2BuffsCount = row2BuffsCount  + 1
 end
 
---Upper Circle Right on Icon 1
-PriorityBuff[4] = {
+Buffs = {
 	"Power Word: Fortitude",
 	"Prayer of Fortitude",
-	"Fortitude"
-}
-
---Upper Circle Right on Icon 2
-PriorityBuff[5] = {
-	"Focus Magic",
-	"Dark Intent"
-}
-
---Upper Circle Right on Icon 3
-PriorityBuff[6] = {
+	"Fortitude",
 	"Shadow Protection",
 	"Prayer of Shadow Protection",
 	"Mark of the Wild",
-	GetSpellInfo(26992), --Thorns (Friendly and Enemy spellId)
 	"Battle Shout",
-}
---Upper Circle Right on Icon 4
-PriorityBuff[7] = {
+	"Focus Magic",
+	"Dark Intent",
 	"Vampiric Embrace",
 	"Arcane Intellect",
 	"Arcane Brilliance",
 	"Dalaran Brilliance",
 }
 
+local smallBuffs = {}
+local smallBuffsCount = 1
+for _, v in ipairs(Buffs) do
+	smallBuffs[v] = smallBuffsCount
+	smallBuffsCount = smallBuffsCount  + 1
+end
+
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 --UPPER RIGHT PRIO COUNT (Buff Overlay Right)
 --------------------------------------------------------------------------------------------------------------------------------------------------
-PriorityBuff[8] = {
+BOR = {
  	--**Resets**--
 
 	14185, --Preparation
@@ -266,17 +255,16 @@ PriorityBuff[8] = {
 
 local BORBuffs = {}
 local BORBuffsCount = 1
-for i = 4, 8 do
-	for _, v in ipairs(PriorityBuff[i]) do
-		BORBuffs[v] = BORBuffsCount 
-		BORBuffsCount = BORBuffsCount  + 1
-	end
+for _, v in ipairs(BOR) do
+	BORBuffs[v] = BORBuffsCount 
+	BORBuffsCount = BORBuffsCount  + 1
 end
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 --UPPER LEFT PRIO COUNT (Buff Overlay Right)
 --------------------------------------------------------------------------------------------------------------------------------------------------
-PriorityBuff[9] = {
+BOL = {
 
 	"Food",
 	"Drink",
@@ -344,30 +332,14 @@ PriorityBuff[9] = {
 
 local BOLBuffs = {}
 local BOLBuffsCount = 1
-for i = 9, 9 do
-	for _, v in ipairs(PriorityBuff[i]) do
-		BOLBuffs[v] = BOLBuffsCount 
-		BOLBuffsCount = BOLBuffsCount  + 1
-	end
+for _, v in ipairs(BOL) do
+	BOLBuffs[v] = BOLBuffsCount 
+	BOLBuffsCount = BOLBuffsCount  + 1
 end
 
-local Buff = {}
-for i = 1, DEFAULT_BUFF do
-	for k, v in ipairs(PriorityBuff[i]) do
-		if not Buff[i] then Buff[i] = {} end
-		if i == 1 and UNIT_CLASS == "PRIEST" then
-			if v == GetSpellInfo(17) then 
-				Buff[i][v] = k
-			end
-		elseif i == 1 and UNIT_CLASS == "MAGE" then
-			if v == "Arcane Intellect" or v == "Arcane Brilliance" or v == "Dalaran Brilliance" then
-				Buff[i][v] = k
-			end
-		else
-			Buff[i][v] = k
-		end
-	end
-end
+
+
+
 
  --------------------------------------------------------------------------------------------------------------------------------------------------
  --Debuffs
@@ -676,14 +648,14 @@ local function ObjectDNE(guid) --Used for Infrnals and Ele
 end
 
 local function compare_1(a,b)
-  return a[6] < b[6]
+  return a[13] < b[13]
 end
 
 
 local function compare_2(a, b)
-	if a[6] < b[6] then return true end
-	if a[6] > b[6] then return false end
-	return a[3] > b[3]
+	if a[13] < b[13] then return true end
+	if a[13] > b[13] then return false end
+	return a[6] > b[6]
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -782,7 +754,7 @@ function DebuffFilter:BOLCLEU()
 		end
 	end
 	if scf and uid then 
-		DebuffFilter:buffsBOL(scf, uid)
+		self:BuffFilter(scf, uid)
 	end
 end
 
@@ -853,22 +825,23 @@ function DebuffFilter:BORCLEU()
 			if not CLEUBOR[sourceGUID] then
 				CLEUBOR[sourceGUID] = {}
 			end
-			tblinsert(CLEUBOR[sourceGUID], {icon, duration, expirationTime, spellId, destGUID, BORBuffs[spellId], sourceName, namePrint})
+			tblinsert(CLEUBOR[sourceGUID], {namePrint, icon, _, _, duration, expirationTime, sourceName, _, _, spellId, _, destGUID, BORBuffs[spellId]})
+			--{icon, duration, expirationTime, spellId, destGUID, BORBuffs[spellId], sourceName, namePrint})
 			tblsort(CLEUBOR[sourceGUID], compare_1)
 			tblsort(CLEUBOR[sourceGUID], compare_2)
 			local ticker = 1
 			Ctimer(duration, function()
 				if CLEUBOR[sourceGUID] then
 					for k, v in pairs(CLEUBOR[sourceGUID]) do
-						if v[4] == spellId then
-							--print(v[7].." ".."Timed Out".." "..v[8].." "..substring(v[5], -7).." left w/ "..string.format("%.2f", v[3]-GetTime()).." BOR C_Timer")
+						if v[10] == spellId then
+							--print(v[1].." ".."Timed Out".." "..v[1].." "..substring(v[12], -7).." left w/ "..string.format("%.2f", v[6]-GetTime()).." BOR C_Timer")
 							tremove(CLEUBOR[sourceGUID], k)
 							tblsort(CLEUBOR[sourceGUID], compare_1)
 							tblsort(CLEUBOR[sourceGUID], compare_2)
-							if #CLEUBOR[sourceGUID] ~= 0 then DebuffFilter:buffsBOR(scf, uid) end
+							if #CLEUBOR[sourceGUID] ~= 0 then self:BuffFilter(scf, uid) end
 							if #CLEUBOR[sourceGUID] == 0 then
 								CLEUBOR[sourceGUID] = nil
-								DebuffFilter:buffsBOR(scf, uid)
+								self:BuffFilter(scf, uid)
 							end
 						end
 					end
@@ -877,17 +850,17 @@ function DebuffFilter:BORCLEU()
 			self.ticker = C_Timer.NewTicker(.1, function()
 				if CLEUBOR[sourceGUID] then
 					for k, v in pairs(CLEUBOR[sourceGUID]) do
-						if (v[5] and (v[4] ~= 394243 and v[4] ~= 387979 and v[4] ~= 394235)) then --Dimmensional Rift Hack to Not Deswpan
-							if substring(v[5], -5) == substring(guid, -5) then --string.sub is to help witj Mirror Images bug
-								if ObjectDNE(v[5]) then
-								--print(v[7].." "..ObjectDNE(v[5], ticker, v[8], v[7]).." "..v[8].." "..substring(v[5], -7).." left w/ "..string.format("%.2f", v[3]-GetTime()).." BOR C_Ticker")
+						if (v[12] and (v[10] ~= 394243 and v[10] ~= 387979 and v[10] ~= 394235)) then --Dimmensional Rift Hack to Not Deswpan
+							if substring(v[12], -5) == substring(guid, -5) then --string.sub is to help witj Mirror Images bug
+								if ObjectDNE(v[12]) then
+								--print(v[1].." "..ObjectDNE(v[12], ticker, v[1], v[7]).." "..v[1].." "..substring(v[12], -7).." left w/ "..string.format("%.2f", v[6]-GetTime()).." BOR C_Ticker")
 								tremove(CLEUBOR[sourceGUID], k)
 								tblsort(CLEUBOR[sourceGUID], compare_1)
 								tblsort(CLEUBOR[sourceGUID], compare_2)
-								if #CLEUBOR[sourceGUID] ~= 0 then DebuffFilter:buffsBOR(scf, uid) end
+								if #CLEUBOR[sourceGUID] ~= 0 then self:BuffFilter(scf, uid) end
 								if #CLEUBOR[sourceGUID] == 0 then
 									CLEUBOR[sourceGUID] = nil
-									DebuffFilter:buffsBOR(scf, uid)
+									self:BuffFilter(scf, uid)
 									end
 									break
 								end
@@ -915,21 +888,21 @@ function DebuffFilter:BORCLEU()
 			if not CLEUBOR[sourceGUID] then
 				CLEUBOR[sourceGUID] = {}
 			end
-			tblinsert(CLEUBOR[sourceGUID], {icon, duration, expirationTime, spellId, destGUID, BORBuffs[spellId], sourceName, namePrint})
+			tblinsert(CLEUBOR[sourceGUID], {namePrint, icon, count, debuffType, duration, expirationTime, sourceName, canStealOrPurge, _, spellId, canApplyAura, destGUID, BORBuffs[spellId]})
 			tblsort(CLEUBOR[sourceGUID], compare_1)
 			tblsort(CLEUBOR[sourceGUID], compare_2)
 			Ctimer(duration, function()
 				if CLEUBOR[sourceGUID] then
 					for k, v in pairs(CLEUBOR[sourceGUID]) do
-						if v[4] == spellId then
-							--print(v[7].." ".."Timed Out".." "..v[8].." "..substring(v[5], -7).." left w/ "..string.format("%.2f", v[3]-GetTime()).." BOR C_Timer")
+						if v[10] == spellId then
+							--print(v[1].." ".."Timed Out".." "..v[1].." "..substring(v[12], -7).." left w/ "..string.format("%.2f", v[6]-GetTime()).." BOR C_Timer")
 							tremove(CLEUBOR[sourceGUID], k)
 							tblsort(CLEUBOR[sourceGUID], compare_1)
 							tblsort(CLEUBOR[sourceGUID], compare_2)
-							if #CLEUBOR[sourceGUID] ~= 0 then DebuffFilter:buffsBOR(scf, uid) end
+							if #CLEUBOR[sourceGUID] ~= 0 then self:BuffFilter(scf, uid) end
 							if #CLEUBOR[sourceGUID] == 0 then
 								CLEUBOR[sourceGUID] = nil
-								DebuffFilter:buffsBOR(scf, uid)
+								self:BuffFilter(scf, uid)
 							end
 						end
 					end
@@ -939,7 +912,7 @@ function DebuffFilter:BORCLEU()
 	end
 
 	if scf and uid then 
-		DebuffFilter:buffsBOR(scf, uid)
+		self:BuffFilter(scf, uid)
 	end
 end
 
@@ -1461,33 +1434,17 @@ end
 --Buff Filtering & Scale
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local function isBuff(unit, index, filter, j)
-	local name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, index, "HELPFUL");
-  if Buff[j] and (Buff[j][spellId] or Buff[j][name]) then
-	  return true
-  else
-	  return false
-  end
-end
 
-local function isdeBuff(unit, index, filter, j)
-local name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, index, "HARMFUL");
-  if Buff[j] and (Buff[j][spellId] or Buff[j][name]) then
-	  return true
-  else
-	  return false
-  end
-end
 
-local function buffTooltip(buffFrame, uid, buffId, cleuSpell)
+local function buffTooltip(buffFrame, uid, index, spellId, filter)
 	buffFrame:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(buffFrame.icon, "ANCHOR_RIGHT")
-		if cleuSpell then
-			GameTooltip:SetSpellByID(cleuSpell)
-		elseif buffId and uid then
-			GameTooltip:SetUnitBuff(uid, buffId, "HELPFUL")
-		elseif buffId then
-			GameTooltip:SetSpellByID(buffId)
+		if index and uid and filter ==  "HELPFUL" then
+			GameTooltip:SetUnitBuff(uid, index, "HELPFUL")
+		elseif index and uid and filter ==  "HARMFUL" then
+			GameTooltip:SetUnitDebuff(uid, index, "HARMFUL")
+		elseif spellId then
+			GameTooltip:SetSpellByID(spellId)
 		end
 		GameTooltip:Show()
 	end)
@@ -1496,22 +1453,6 @@ local function buffTooltip(buffFrame, uid, buffId, cleuSpell)
 	end)
 end
 
-local function debuffTooltip(buffFrame, uid, buffId, cleuSpell)
-	buffFrame:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(buffFrame.icon, "ANCHOR_RIGHT")
-		if cleuSpell then
-			GameTooltip:SetSpellByID(cleuSpell)
-		elseif buffId then
-			GameTooltip:SetUnitDebuff(uid, buffId, "HARMFUL")
-		elseif buffId then
-			GameTooltip:SetSpellByID(buffId)
-		end
-		GameTooltip:Show()
-	end)
-	buffFrame:SetScript("OnLeave", function(self)
-		GameTooltip:Hide()
-	end)
-end
 
 local function buffCount(buffFrame, count, backCount)
 	if count or backCount then
@@ -1529,129 +1470,120 @@ local function buffCount(buffFrame, count, backCount)
 	end
 end
 
-local function debuffFilter(uid, j, filter)
-	local index, buff, backCount
-	for i = 1, 40 do
-		local buffName, _, count, debuffType, _, _, unitCaster, _, _, spellId = UnitAura(uid, i, filter)
-		if ( buffName ) then
-			if isdeBuff(uid, i, filter, j) then
-				--if anybackCount[buffName] or anybackCount[spellId] then backCount = count end 	--Prayer of mending hack
-				if Buff[j][buffName] then
-						Buff[j][spellId] =  Buff[j][buffName]
-				end
-				if  Buff[j][spellId] then
-					if not buff or  Buff[j][spellId] <  Buff[j][buff] then
-						buff = spellId
-						index = i
-					end
-				end
-			end
-		else
-			break
-		end
-	end
-	return index, buff, backCount
-end
 
-local function magicFilter(uid, j, filter)
-	local magicBuffs = 0
-	for i = 1, 40 do
-		local buffName, _,  _, debuffType = UnitAura(uid, i, filter)
-		if not buffName then break end
-		if debuffType == "Magic" then
-			magicBuffs = magicBuffs + 1
-		end
-	end
-	return magicBuffs
-end
 
-local function buffFilter(uid, j, filter, player)
-	local index, buff, backCount
-	for i = 1, 40 do
-		local buffName, _, count, debuffType, _, _, unitCaster, _, _, spellId = UnitAura(uid, i, filter)
-		if ( buffName ) then
-			if isBuff(uid, i, filter, j) then
-				if anybackCount[buffName] or anybackCount[spellId] then backCount = count end 	--Prayer of mending hack
-				if Buff[j][buffName] then
-						Buff[j][spellId] =  Buff[j][buffName]
-				end
-				if  Buff[j][spellId] then
-					if not buff or  Buff[j][spellId] <  Buff[j][buff] then
-						buff = spellId
-						index = i
-					end
-				end
-			end
-		else
-			break
-		end
-	end
-	return index, buff, backCount
-end
-
-local function buffFilterplayer(uid, j, filter)
-	local index, buff, backCount
-	for i = 1, 40 do
-		local buffName, _, count, _, _, _, unitCaster, _, _, spellId = UnitAura(uid, i, filter)
-		if ( buffName ) then
-			if unitCaster == "player" and isBuff(uid, i, filter, j) then
-				if (playerbackCount[buffName] or playerbackCount[spellId]) and unitCaster == "player" then backCount = count end 	--Prayer of mending hack
-				if Buff[j][buffName] then
-						Buff[j][spellId] =  Buff[j][buffName]
-				end
-				if  Buff[j][spellId] then
-					if not buff or  Buff[j][spellId] <  Buff[j][buff] then
-						buff = spellId
-						index = i
-					end
-				end
-			end
-		else
-			break
-		end
-	end
-	return index, buff, backCount
-end
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Buff Frame Main Loop, Sets Icon and Count in this Loop
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function DebuffFilter:buffsBOL(scf, uid)
+function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, BUFFSIZE)
 	local f = scf.f
 	local frameWidth, frameHeight = f:GetSize()
-	local localizedClass, englishClass, classIndex = UnitClass(uid);
 	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
 	local overlaySize = 11 * componentScale
-	local filter = "HELPFUL"
-	for j = 9, 9 do
-		local index, buff, backCount = buffFilter(uid, j, filter)
-		local sourceGUID = UnitGUID(uid)
-		local cleuSpell
-		
-		if index or CLEUBOL[sourceGUID] then
-			local buffId = index
-			local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura
-			if CLEUBOL[sourceGUID] then
-				if Buff[j][buff] == nil or (Buff[j][buff] > Buff[j][CLEUBOL[sourceGUID][1][4]]) then
-					icon = CLEUBOL[sourceGUID][1][1]
-					duration = CLEUBOL[sourceGUID][1][2]
-					expirationTime = CLEUBOL[sourceGUID][1][3]
-					spellId = CLEUBOL[sourceGUID][1][4]
-					cleuSpell = spellId
-					count = 0
-				else
-					name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitBuff(uid, index)
-				end
-			else
-				name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitBuff(uid, index)
-			end
-			
-			local buffFrame = scf.buffFrames[j]
+	local buffFrame = scf.buffFrames[j]
 
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			----CLEU DeBuff Timer
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	if name then 
+
+		if icon then
+			buffFrame.icon:SetTexture(icon);
+			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
+			buffFrame.icon:SetVertexColor(1, 1, 1);
+			buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
+		end
+
+		buffFrame.SpellId = spellId
+
+		buffTooltip(buffFrame, uid, index, spellId, filter)
+
+		if j == 4 or j == 5 or j == 6 or j == 7 then
+			if name == GetSpellInfo(2791) then --Fort
+				--ActionButton_ShowOverlayGlow(buffFrame)
+			else
+				ActionButton_HideOverlayGlow(buffFrame)
+			end
+			SetPortraitToTexture(buffFrame.icon, icon)
+			buffFrame.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+		end
+
+		if j == 8 then
+			scf.buffFrames[4]:ClearAllPoints() -- Buff Icons
+			scf.buffFrames[4]:SetPoint("RIGHT", f, "RIGHT", -5.5, 5)
+		end
+
+		if j == 13 then
+			if count == 1 then
+				buffFrame.count:SetTextColor(1, 0 ,0, 1)
+			elseif count == 3 or count == 4 then 
+				buffFrame.count:SetTextColor(1, 1 ,0, 1)
+			else
+				buffFrame.count:SetTextColor(1, 1 ,1, 1)
+			end
+		end
+
+		buffCount(buffFrame, count, backCount)
+
+		buffFrame:SetID(j);
+		if expirationTime then
+			local startTime = expirationTime - duration;
+			if expirationTime - startTime > 60 then
+				CooldownFrame_Clear(buffFrame.cooldown);
+			else
+				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
+			end
+		end
+		buffFrame:SetSize(overlaySize*BUFFSIZE,overlaySize*BUFFSIZE);
+		buffFrame:Show();
+		
+	else
+		local buffFrame = scf.buffFrames[j];
+		if buffFrame then
+			buffFrame:SetSize(overlaySize*BUFFSIZE,overlaySize*BUFFSIZE);
+			buffFrame:Hide()
+			if j == 8 then --BuffOverlay Right 
+				scf.buffFrames[4]:ClearAllPoints() --Cleares SMall Buff Icon Positions
+				scf.buffFrames[4]:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5.5, -6.5)
+			end
+		end
+	end
+end
+
+function DebuffFilter:frameBuffs(scf, uid, tbl1, tbl2, tbl3)
+
+	if tbl2 then
+		if tbl2[1] then 
+			local j = 4
+			for i = 1, 4 do  
+				if tbl2[i] then
+					local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter = unpack(tbl2[i])
+					DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl2.BUFFSIZE)
+				else
+					DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl2.BUFFSIZE)
+				end
+				j = j + 1
+			end
+		else
+			for j = 4, 7 do  
+				DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl2.BUFFSIZE)
+			end
+		end
+	end
+
+
+	if tbl1 then
+		if tbl1[1] then
+			local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter = unpack(tbl1[1])
+
+			-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+			--Icon Change
+			-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+			if spellId == 387636 then --Soulburn: Healthstone
+				icon = 538745
+			end
+
+			if spellId == 55277 then 
+				icon = 136097
+			end
+
+			if spellId == 87153 then 
+				icon = "Interface\\Icons\\ability_priest_darkarchangel"
+			end
 
 			-----------------------------------------------------------------------------------------------------------------
 			--Barrier Check
@@ -1692,7 +1624,18 @@ function DebuffFilter:buffsBOL(scf, uid)
 				end
 			end
 
-			-----------------------------------------------------------------------------------------------------------------
+
+			if spellId == 58833 or spellId == 58831 or spellId == 58834 or spellId == 33831 then -- Trees and Mirror Image Count
+				local sourceGUID = UnitGUID(uid)
+				if not count then count = 0 end
+				for i = 1, #CLEUBOR[sourceGUID] do
+					if CLEUBOR[sourceGUID][i][10] == 58833  or CLEUBOR[sourceGUID][i][10] == 58831 or CLEUBOR[sourceGUID][i][10] == 58834 or CLEUBOR[sourceGUID][i][10] == 33831 then
+						count = count + 1
+					end
+				end
+			end
+
+			--------------------------------------~---------------------------------------------------------------------------
 			--Warbanner
 			-----------------------------------------------------------------------------------------------------------------
 			if spellId == 236321 then -- Warbanner (Totems Need a Spawn Time Check)
@@ -1704,373 +1647,132 @@ function DebuffFilter:buffsBOL(scf, uid)
 				end
 			end
 
-			buffFrame.icon:SetTexture(icon);
-			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
-			buffFrame.icon:SetVertexColor(1, 1, 1);
-			buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
-			buffFrame.SpellId = spellId
-
-			buffTooltip(buffFrame, uid, buffId, cleuSpell)
-			buffCount(buffFrame, count, backCount)
-			buffFrame:SetID(j);
-			
-			--[[if spellId == 199448 then --Ultimate Sac Glow
-				ActionButton_ShowOverlayGlow(buffFrame)
-			else
-				ActionButton_HideOverlayGlow(buffFrame)
-			end]]
-			local startTime = expirationTime - duration;
-			if expirationTime  - startTime > 61 then
-				CooldownFrame_Clear(buffFrame.cooldown);
-			else
-				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-			end
-			buffFrame:SetSize(overlaySize*1,overlaySize*1);
-			buffFrame:Show();
+			DebuffFilter:SetBuffIcon(scf, uid, tbl1.j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl1.BUFFSIZE)
 		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*1,overlaySize*1);
-				buffFrame:Hide()
-				ActionButton_HideOverlayGlow(buffFrame)
-			end
+			DebuffFilter:SetBuffIcon(scf, uid, tbl1.j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl1.BUFFSIZE)
 		end
-	index = nil; buff = nil; backCount= nil
 	end
-end
 
-function DebuffFilter:buffsBOR(scf, uid)
-	local f = scf.f
-	local frameWidth, frameHeight = f:GetSize()
-	local localizedClass, englishClass, classIndex = UnitClass(uid);
-	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
-	local overlaySize = 11 * componentScale
-	local filter = "HELPFUL"
-	local Z
-	for j = 4, 8 do
-		local index, buff, backCount = buffFilter(uid, j, filter)
-		local sourceGUID = UnitGUID(uid)
-		local cleuSpell
-		local nameSpell = GetSpellInfo(buff)
-
-
-		if UNIT_CLASS == "MAGE" and (nameSpell == "Arcane Intellect" or nameSpell == "Arcane Brilliance" or nameSpell == "Dalaran Brilliance") then index = nil end --Hack To Stop Showing Buffs on Certain Classes
-
-		if index or (CLEUBOR[sourceGUID] and j == 8) then
-			local buffId = index
-			local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura
-			if CLEUBOR[sourceGUID] and j == 8 then
-				if Buff[j][buff] == nil or (Buff[j][buff] > Buff[j][CLEUBOR[sourceGUID][1][4]]) then
-					icon = CLEUBOR[sourceGUID][1][1]
-					duration = CLEUBOR[sourceGUID][1][2]
-					expirationTime = CLEUBOR[sourceGUID][1][3]
-					spellId = CLEUBOR[sourceGUID][1][4]
-					cleuSpell = spellId
-					if spellId == 58833 or spellId == 58831 or spellId == 58834 or spellId == 33831 then -- Trees and Mirror Image Count
-						if not count then count = 0 end
-						for i = 1, #CLEUBOR[sourceGUID] do
-							if CLEUBOR[sourceGUID][i][4] == 58833  or CLEUBOR[sourceGUID][i][4] == 58831 or CLEUBOR[sourceGUID][i][4] == 58834 or CLEUBOR[sourceGUID][i][4] == 33831 then
-								count = count + 1
-							end
-						end
-					else
-						count = 0
-					end
+	--[[if tbl3 then
+		if tbl3[1] then 
+			local j = 10
+			for i = 1, 3 do  
+				if tbl3[i] then
+					local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter = unpack(tbl3[i])
+					DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl3.BUFFSIZE)
 				else
-					name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitBuff(uid, index)
+					DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl3.BUFFSIZE)
 				end
-			else
-				name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitBuff(uid, index)
+				j = j + 1
 			end
-
-			local buffFrame = scf.buffFrames[j]
-
-			-----------------------------------------------------------------------------------------------------------------
-			--Growing Buffs
-			-----------------------------------------------------------------------------------------------------------------
-			if j == 4 or j == 5 or j == 6 or j == 7 then
-				if not Z then
-					scf.buffFrames[4]:Hide();scf.buffFrames[5]:Hide();scf.buffFrames[6]:Hide();scf.buffFrames[7]:Hide();
-					j = 4
-					buffFrame = scf.buffFrames[j]; Z = j
-				else
-					buffFrame = scf.buffFrames[Z+1]
-					Z = Z + 1
-				end
-			end
-			
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			----CLEU DeBuff Timer
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			----Two Debuff Conditions
-			------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			-----------------------------------------------------------------------------------------------------------------
-			--[[Icy Veins Stacks for Slick Ice
-			-----------------------------------------------------------------------------------------------------------------
-			if spellId == 12472 then
-				for i = 1, 40 do
-					local _, _, c, _, d, e, _, _, _, s = UnitAura(uid, i, "HELPFUL")
-					if not s then break end
-					if s == 382148 then
-						count = c
-					end
-				end
-			end
-			]]
-			-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-			--Icon Change
-			-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-			if spellId == 387636 then --Soulburn: Healthstone
-				icon = 538745
-			end
-
-			if spellId == 55277 then 
-				icon = 136097
-			end
-
-			if spellId == 87153 then 
-				icon = "Interface\\Icons\\ability_priest_darkarchangel"
-			end
-
-			buffFrame.icon:SetTexture(icon);
-			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
-			buffFrame.icon:SetVertexColor(1, 1, 1);
-			buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
-			buffFrame.SpellId = spellId
-
-			buffTooltip(buffFrame, uid, buffId, cleuSpell)
-			buffCount(buffFrame, count, backCount)
-
-			if j == 4 or j == 5 or j == 6 or j == 7 then
-			if name == GetSpellInfo(2791) then --Fort
-				--ActionButton_ShowOverlayGlow(buffFrame)
-			else
-				ActionButton_HideOverlayGlow(buffFrame)
-			end
-				SetPortraitToTexture(buffFrame.icon, icon)
-				buffFrame.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93);
-			end
-			if j == 8 then
-				scf.buffFrames[4]:ClearAllPoints() -- Buff Icons
-				scf.buffFrames[4]:SetPoint("RIGHT", f, "RIGHT", -5.5, 5)
-			end
-			buffFrame:SetID(j);
-			local startTime = expirationTime - duration;
-			if expirationTime - startTime > 60 then
-				CooldownFrame_Clear(buffFrame.cooldown);
-			else
-				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-			end
-			buffFrame:SetSize(overlaySize*1,overlaySize*1);
-			buffFrame:Show();
-			
 		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*1,overlaySize*1);
-				buffFrame:Hide()
-				if j == 8 then --BuffOverlay Right 
-					scf.buffFrames[4]:ClearAllPoints() --Cleares SMall Buff Icon Positions
-					scf.buffFrames[4]:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5.5, -6.5)
-				end
+			for j = 10, 12 do  
+				DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, tbl3.BUFFSIZE)
 			end
 		end
-	index = nil; buff = nil; backCount= nil
-	end
+	end]]
 end
 
-function DebuffFilter:buffsRow2(scf, uid)
-	local f = scf.f
-	local frameWidth, frameHeight = f:GetSize()
-	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
-	local overlaySize = 11 * componentScale
-	local filter = "HELPFUL"
-	local Z
-	for j = 10, 12 do --buffRow1 is J == 1, 2, 3
-		local index, buff, backCount = buffFilterplayer(uid, j, filter)
-		if index then
-			local buffId = index
-			local _, icon, count, _, duration, expirationTime, _, _, _, _ = UnitBuff(uid, index, filter);
-			local buffFrame = scf.buffFrames[j]
-			-----------------------------------------------------------------------------------------------------------------
-			--Growing Buffs
-			-----------------------------------------------------------------------------------------------------------------
-			if j == 10 or j == 11 or j == 12 then
-				if not Z then
-					scf.buffFrames[10]:Hide();scf.buffFrames[11]:Hide();scf.buffFrames[12]:Hide();
-					j = 10
-					buffFrame = scf.buffFrames[j]; Z = j
-				else
-					buffFrame = scf.buffFrames[Z+1]
-					Z = Z + 1
-				end
-			end
-			buffFrame.icon:SetTexture(icon);
-			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
-			buffFrame.icon:SetVertexColor(1, 1, 1);
-			buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
-			buffTooltip(buffFrame, uid, buffId, cleuSpell)
-			buffCount(buffFrame, count, backCount)
-			buffFrame:SetID(j);
-			local startTime = expirationTime - duration;
-			if expirationTime  - startTime > 61 then
-				CooldownFrame_Clear(buffFrame.cooldown);
-			else
-				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-			end
-			buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-			buffFrame:Show();
-		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-				buffFrame:Hide()
-			end
-		end
-	index = nil; buff = nil; backCount= nil
-	end
-end
+local function compare_tbl1(a,b)
+	return a[13] < b[13]
+  end
+  
+  
+  local function compare_tbl2(a, b)
+	  if a[13] < b[13] then return true end
+	  if a[13] > b[13] then return false end
+	  return a[6] > b[6]
+  end
 
-function DebuffFilter:buffsRow1(scf, uid)
-	local f = scf.f
-	local frameWidth, frameHeight = f:GetSize()
-	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
-	local overlaySize = 11 * componentScale
-	local filter = "HELPFUL"
-	for j = 1, 3 do --
-		local index, buff, backCount
-		if j == 1 and (UNIT_CLASS == "PRIEST" or UNIT_CLASS == "MAGE") then
-			index, buff, backCount = buffFilter(uid, j, filter)
-		else
-			index, buff, backCount = buffFilterplayer(uid, j, filter)
-		end
-		if index then
-			local buffId = index
-			local _, icon, count, _, duration, expirationTime, _, _, _, _ = UnitBuff(uid, index, filter);
-			local buffFrame = scf.buffFrames[j]
-			buffFrame.icon:SetTexture(icon);
-			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
-			buffFrame.icon:SetVertexColor(1, 1, 1);
-			buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
-			buffTooltip(buffFrame, uid, buffId, cleuSpell)
-			buffCount(buffFrame, count, backCount)
-			buffFrame:SetID(j);
-			local startTime = expirationTime - duration;
-			if expirationTime  - startTime > 61 then
-				CooldownFrame_Clear(buffFrame.cooldown);
-			else
-				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-			end
-			buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-			if j == 1 and UNIT_CLASS == "PRIEST" then
-				scf.buffFrames[14]:Hide()
-			end
-			buffFrame:Show();
-		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-				buffFrame:Hide()
-				if j == 1 and UNIT_CLASS == "PRIEST" then
-					DebuffFilter:weakenedSoul(scf, uid)
-				end
-			end
-		end
-	index = nil; buff = nil; backCount= nil
-	end
-end
 
-function DebuffFilter:magicCount(scf, uid)
-	local f = scf.f
-	local frameWidth, frameHeight = f:GetSize()
-	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
-	local overlaySize = 11 * componentScale
-	local filter = "HELPFUL"
-	local j = 13
-		local count = magicFilter(uid, j, filter)
-		if count > 0 then
-			local buffFrame = scf.buffFrames[j]
-			buffFrame:SetID(j);
-			if ( count > 0 ) then
-				local countText = count;
-				if ( count >= 100 ) then
-					countText = BUFF_STACKS_OVERFLOW;
-				end
-					buffFrame.count:Show();
-					buffFrame.count:SetText(countText);
-			else
-				buffFrame.count:Hide();
-			end
-			buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-			if count == 1 then
-				buffFrame.count:SetTextColor(1, 0 ,0, 1)
-			elseif count == 3 or count == 4 then 
-				buffFrame.count:SetTextColor(1, 1 ,0, 1)
-			else
-				buffFrame.count:SetTextColor(1, 1 ,1, 1)
-			end
-			buffFrame:Show();
-		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-				buffFrame:Hide()
-			end
-		end
-	index = nil; buff = nil; backCount= nil
-end
-
-function DebuffFilter:weakenedSoul(scf, uid, hide_only)
-	local f = scf.f
-	local frameWidth, frameHeight = f:GetSize()
-	local componentScale = min(frameHeight / NATIVE_UNIT_FRAME_HEIGHT, frameWidth / NATIVE_UNIT_FRAME_WIDTH);
-	local overlaySize = 11 * componentScale
-	local filter = "HARMFUL"
-	for j = 14, 14 do --buffRow1 is J == 1, 2, 3
-		local index, buff, backCount = debuffFilter(uid, j, filter)
-		if index then
-			local buffId = index
-			local _, icon, count, debuffType, duration, expirationTime, _, _, _, _ = UnitDebuff(uid, index, filter);
-			local buffFrame = scf.buffFrames[j]
-			buffFrame.icon:SetTexture(icon);
-			buffFrame.icon:SetDesaturated(nil) --Destaurate Icon
-			local color = DebuffTypeColor[debuffType] or DebuffTypeColor["none"];
-			buffFrame.border:SetVertexColor(color.r, color.g, color.b);
-			--buffFrame.icon:SetTexCoord(0.01, .99, 0.01, .99)
-			debuffTooltip(buffFrame, uid, buffId, cleuSpell)
-			buffCount(buffFrame, count, backCount)
-			buffFrame:SetID(j);
-			local startTime = expirationTime - duration;
-			if expirationTime  - startTime > 61 then
-				CooldownFrame_Clear(buffFrame.cooldown);
-			else
-				CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-			end
-			buffFrame:SetSize(overlaySize*BUFF_SIZE*.95,overlaySize*BUFF_SIZE*.95);
-			if not hide_only then 
-				buffFrame:Show();
-			end
-		else
-			local buffFrame = scf.buffFrames[j];
-			if buffFrame then
-				buffFrame:SetSize(overlaySize*BUFF_SIZE,overlaySize*BUFF_SIZE);
-				buffFrame:Hide()
-			end
-		end
-	index = nil; buff = nil; backCount= nil
-	end
+local function Position(tbl, name, spellId)
+	local position = tbl[name] or tbl[spellId]
+	return position
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Filters Buff and Debuffs to Correct Loops
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function DebuffFilter:BuffFilter(scf, uid)
+
+	local buffTableBOL = {}; buffTableBOL.j = 9; buffTableBOL.BUFFSIZE = BOL_BUFF_SIZE
+	local buffTableBOR = {}; buffTableBOR.j = 8; buffTableBOR.BUFFSIZE = BOR_BUFF_SIZE
+	local buffTableBuff1 = {} buffTableBuff1.j = 1; buffTableBuff1.BUFFSIZE = row1BUFF_SIZE
+	local buffTableBuff2 = {} buffTableBuff2.j = 2; buffTableBuff2.BUFFSIZE = row1BUFF_SIZE
+	local buffTableBuff3 = {} buffTableBuff3.j = 3; buffTableBuff3.BUFFSIZE = row1BUFF_SIZE
+	local buffTableBuffs = {}; buffTableBuffs.BUFFSIZE = SMALL_BUFF_SIZE
+	local buffTableBuffs4 = {}; buffTableBuffs4.BUFFSIZE = SMALL_BUFF_SIZE
+	local MagicCountPlayerTableBuffs = {};MagicCountPlayerTableBuffs.j = 13; MagicCountPlayerTableBuffs.BUFFSIZE = SMALL_BUFF_SIZE
+	local MagicCountPlayer = 0 
+	
+	for i = 1, 40 do
+		local filter = "HELPFUL"
+		local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitBuff(uid, i)
+		if not name or not spellId then break end
+		if BOLBuffs[name] or BOLBuffs[spellId] then
+			tblinsert(buffTableBOL, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(BOLBuffs, name, spellId), i, filter})
+		elseif BORBuffs[name] or BORBuffs[spellId] then
+			tblinsert(buffTableBOR, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(BORBuffs, name, spellId), i, filter})
+		elseif (row1Buffs[1][name] or row1Buffs[1][spellId]) and unitCaster == "player" then
+			tblinsert(buffTableBuff1, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[1], name, spellId), i, filter})
+		elseif (row1Buffs[2][name] or row1Buffs[2][spellId]) and unitCaster == "player" then
+			tblinsert(buffTableBuff2, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[2], name, spellId), i, filter})
+		elseif (row1Buffs[3][name] or row1Buffs[3][spellId]) and unitCaster == "player" then
+			tblinsert(buffTableBuff3, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[3], name, spellId), i, filter})
+		elseif smallBuffs[name] or smallBuffs[spellId] then
+			tblinsert(buffTableBuffs, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(smallBuffs, name, spellId), i, filter})
+		--elseif row2Buffs[name] or row2Buffs[spellId] then
+			--tblinsert(buffTableBuffs4, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row2Buffs, name, spellId), i, filter})
+		end
+		if debuffType == "Magic" and UnitIsUnit(uid, "player") then 
+			MagicCountPlayer = MagicCountPlayer + 1
+		end
+		if  MagicCountPlayer > 0 then 
+			MagicCountPlayerTableBuffs[1] = {"MagicCount", nil, MagicCountPlayer, nil, nil, nil, nil, nil, nil, nil, nil, nil, 1, nil, nil}
+		end
+	end
+
+	for i = 1, 40 do
+		local filter = "HARMFUL"
+		local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitDebuff(uid, i)
+		if not name or not spellId then break end
+		if row1Buffs[1][name] or row1Buffs[1][spellId] then
+			tblinsert(buffTableBuff1, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[1], name, spellId), i, filter})
+		end
+	end
+
+	local sourceGUID = UnitGUID(uid)
+	if CLEUBOR[sourceGUID] then
+		for k, v in pairs(CLEUBOR[sourceGUID]) do
+			tblinsert(buffTableBOR, v )
+		end
+	end
+
+	tblsort(buffTableBOR, compare_tbl1)
+	tblsort(buffTableBOR, compare_tbl2)
+	tblsort(buffTableBOL, compare_tbl1)
+	tblsort(buffTableBuff1, compare_tbl1)
+	tblsort(buffTableBuff2, compare_tbl1)
+	tblsort(buffTableBuff3, compare_tbl1)
+	tblsort(buffTableBuffs, compare_tbl1)
+	--tblsort(buffTableBuffs4, compare_tbl1)
+	
+
+	self:frameBuffs(scf, uid, buffTableBuff1)
+	self:frameBuffs(scf, uid, buffTableBuff2)
+	self:frameBuffs(scf, uid, buffTableBuff3)
+	self:frameBuffs(scf, uid, buffTableBOR, buffTableBuffs)
+	self:frameBuffs(scf, uid, buffTableBOL)
+	--self:frameBuffs(scf, uid, nil, nil, buffTableBuffs4)
+	self:frameBuffs(scf, uid, MagicCountPlayerTableBuffs)
+
+end
 
 
-local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
-
+local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo, event)
+	--print(event.." "..scf.displayedUnit)
+	
 	local debuffsChanged = false;
 	local buffsRow1 = false;
 	local buffsRow2 = false;
@@ -2079,6 +1781,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 	local buffsBOC = false;
 	local magicCount = false;
 	local weakenedSoul = false;
+	local buffChanged = false;
 
 	local function HandleAura(aura)
 		if aura then 
@@ -2101,6 +1804,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 		buffsBOL = true;
 		buffsBOC = true;
 		magicCount = true;
+		buffChanged = true;
 		weakenedSoul = true;
 	else
 		if unitAuraUpdateInfo.addedAuras ~= nil then
@@ -2129,6 +1833,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 					buffsBOR = true
 					buffsBOL = true
 					magicCount = true
+					buffChanged = true;
 				end
 			end
 		end
@@ -2159,6 +1864,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 					buffsBOR = true
 					buffsBOL = true
 					magicCount = true
+					buffChanged = true;
 				end
 			end
 		end
@@ -2171,6 +1877,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 			buffsBOR = true
 			buffsBOL = true
 			magicCount = true
+			buffChanged = true;
 			--[[for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
 				if scf.debuffs[auraInstanceID] ~= nil then --todo: is aura shown, if not you do not need to fire
 					local aura = scf.buffs[auraInstanceID]
@@ -2200,7 +1907,7 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 		DebuffFilter:UpdateDebuffs(scf, scf.displayedUnit)
 	end
 
-	if buffsRow1 then
+	--[[if buffsRow1 then
 		DebuffFilter:buffsRow1(scf, scf.displayedUnit)
 	end
 	if buffsRow2 then
@@ -2223,7 +1930,11 @@ local function DebuffFilter_UpdateAuras(scf, unitAuraUpdateInfo)
 		if UNIT_CLASS == "PRIEST" then
 			DebuffFilter:weakenedSoul(scf, scf.displayedUnit, true)
 		end
-	end 
+	end]]
+
+	if buffChanged or weakenedSoul then 
+		DebuffFilter:BuffFilter(scf, scf.displayedUnit)
+	end
 end
 
 
@@ -2458,15 +2169,15 @@ end
 local function scf_OnEvent(self, event, ...)
 	local arg1, arg2, arg3, arg4, arg5 = ...
 	if ( event == 'PLAYER_ENTERING_WORLD' ) then
-		DebuffFilter_UpdateAuras(self)
+		DebuffFilter_UpdateAuras(self, nil, event)
 	elseif ( event == 'ZONE_CHANGED_NEW_AREA' ) then
-		DebuffFilter_UpdateAuras(self)
+		DebuffFilter_UpdateAuras(self, nil, event)
 	else
 		local unitMatches = arg1 == self.unit or arg1 == self.displayedUnit
 		if ( unitMatches ) then
 			if ( event == 'UNIT_AURA' ) then
 				local unitAuraUpdateInfo = arg2
-				DebuffFilter_UpdateAuras(self, unitAuraUpdateInfo)
+				DebuffFilter_UpdateAuras(self, unitAuraUpdateInfo, event)
 			end
 		end
 		--if ( unitMatches or arg1 == "player" then
@@ -2481,7 +2192,7 @@ local function scf_OnEvent(self, event, ...)
 				self:RegisterUnitEvent('UNIT_AURA', f.unit, f.displayedUnit)
 				self:RegisterUnitEvent('PLAYER_GAINS_VEHICLE_DATA', f.unit, f.displayedUnit)
 				self:RegisterUnitEvent('PLAYER_LOSES_VEHICLE_DATA', f.unit, f.displayedUnit)
-				DebuffFilter_UpdateAuras(self)
+				DebuffFilter_UpdateAuras(self, nil, event)
 			end
 		end
 	end
@@ -2524,7 +2235,7 @@ function DebuffFilter:RegisterUnit(f, forced)
 	scf:RegisterEvent('UNIT_ENTERED_VEHICLE')
 
 	DebuffFilter:ApplyFrame(f)
-	DebuffFilter_UpdateAuras(scf)
+	DebuffFilter_UpdateAuras(scf, nil, "RegisterUnit "..f.unit)
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
