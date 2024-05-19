@@ -60,22 +60,22 @@ local playerbackCount = {
 
 PriorityBuff[1] = {
 	"Power Word: Shield",
-	"Arcane Intellect",
-	"Arcane Brilliance",
-	"Dalaran Brilliance",
+	--"Arcane Intellect",
+	--"Arcane Brilliance",
+	--"Dalaran Brilliance",
 	"Weakened Soul"
 }
 
 PriorityBuff[2]= {
 	"Renew",
-	"Dampen Magic",
-	"Amplify Magic",
+	--"Dampen Magic",
+	--"Amplify Magic",
 }
 
 PriorityBuff[3] = {
 	"Prayer of Mending",
-	"Slow Fall",
-	"Focus Magic"
+	--"Slow Fall",
+	--"Focus Magic"
 }
 
 local row1Buffs = {}
@@ -1714,7 +1714,7 @@ function DebuffFilter:BuffFilter(scf, uid)
 			tblinsert(buffTableBOL, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(BOLBuffs, name, spellId), i, filter})
 		elseif BORBuffs[name] or BORBuffs[spellId] then
 			tblinsert(buffTableBOR, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(BORBuffs, name, spellId), i, filter})
-		elseif (row1Buffs[1][name] or row1Buffs[1][spellId]) and unitCaster == "player" then
+		elseif (row1Buffs[1][name] or row1Buffs[1][spellId]) then -- and unitCaster == "player" then
 			tblinsert(buffTableBuff1, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[1], name, spellId), i, filter})
 		elseif (row1Buffs[2][name] or row1Buffs[2][spellId]) and unitCaster == "player" then
 			tblinsert(buffTableBuff2, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[2], name, spellId), i, filter})
