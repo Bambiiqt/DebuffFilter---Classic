@@ -2245,7 +2245,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function  DebuffFilter:findFrames(forced, event)
-	print("DebufF_Filter_Frames: "..event)
+	--print("DebufF_Filter_Frames: "..event)
 	if CompactRaidFrameManager.container.groupMode == "flush"  then
 		for i = 1, 80 do
 			local f = _G["CompactRaidFrame"..i]
