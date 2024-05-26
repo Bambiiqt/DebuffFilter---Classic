@@ -1516,7 +1516,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 
 		if j == 13 then
 			if count == 1 or count == 2 then
-				buffFrame.count:SetTextColor(.8, 0 ,0, 1)
+				buffFrame.count:SetTextColor(.9, 0 ,0, 1)
 			elseif count == 3 or count == 4 then 
 				buffFrame.count:SetTextColor(1, 1 ,0, 1)
 			else
