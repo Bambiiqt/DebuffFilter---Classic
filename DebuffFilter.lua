@@ -6,7 +6,7 @@ DebuffFilter.cache = {}
 
 local DEFAULT_DEBUFF = 3
 local DEFAULT_BIGDEBUFF = 5
-local DEFAULT_BUFF = 14 --This Number Needs to Equal the Number of tracked Table Buf
+local DEFAULT_BUFF = 13 --This Number Needs to Equal the Number of tracked Table Buf
 local BIGGEST = 1.6
 local BIGGER = 1.45
 local BIG = 1.45
@@ -1515,7 +1515,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 		end
 
 		if j == 13 then
-			if count == 1 then
+			if count == 1 or count == 2 then
 				buffFrame.count:SetTextColor(1, 0 ,0, 1)
 			elseif count == 3 or count == 4 then 
 				buffFrame.count:SetTextColor(1, 1 ,0, 1)
@@ -1524,24 +1524,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 			end
 		end
 
-		if spellId == 6788 then 
-			if not buffFrame.backdrop then
-				buffFrame.backdrop = CreateFrame("Frame", nil, nil, "BackdropTemplate")
-				buffFrame.backdrop:SetBackdrop({
-					bgFile =  "Interface\Tooltips\UI-Tooltip-Background",
-					edgeFile = "Interface\Tooltips\UI-Tooltip-Border", edgeSize = 16,
-					tilesize = 16, 
-					insets = {left = 4, right = 4, top = 4, bottom = 4} 
-				})
-			buffFrame.backdrop:SetAllPoints(buffFrame)
-			buffFrame.backdrop:SetSize(128,128)
-			buffFrame.backdrop:SetFrameStrata("HIGH")
-			buffFrame.backdrop:SetFrameLevel(1)
-			buffFrame.backdrop:SetBackdropColor(.7,0,0,0)
-			buffFrame.backdrop:SetBackdropBorderColor(.70,0,0)
-			end
-			buffFrame.backdrop:Show()
-		end
+
 
 		buffCount(buffFrame, count, backCount)
 
@@ -1557,17 +1540,24 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 		buffFrame:SetSize(overlaySize*BUFFSIZE,overlaySize*BUFFSIZE);
 		buffFrame:Show();
 		
+		if filter == "HARMFUL" then 
+			local color = DebuffTypeColor[debuffType] or DebuffTypeColor["none"];
+		--	buffFrame.debuff:SetSize(overlaySize, overlaySize) 
+			buffFrame.debuffBorder:SetVertexColor(color.r, color.g, color.b);
+			buffFrame.debuffBorder:Show()
+		else
+			buffFrame.debuffBorder:Hide()
+		end
+		
 	else
 		local buffFrame = scf.buffFrames[j];
 		if buffFrame then
 			buffFrame:SetSize(overlaySize*BUFFSIZE,overlaySize*BUFFSIZE);
 			buffFrame:Hide()
+			buffFrame.debuffBorder:Hide()
 			if j == 8 then --BuffOverlay Right 
 				scf.buffFrames[4]:ClearAllPoints() --Cleares SMall Buff Icon Positions
 				scf.buffFrames[4]:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5.5, -6.5)
-			end
-			if buffFrame.backdrop then
-				buffFrame.backdrop:Hide()
 			end
 		end
 	end
@@ -1575,6 +1565,9 @@ end
 
 function DebuffFilter:frameBuffs(scf, uid, tbl1, tbl2, tbl3)
 
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Used for Raid Buffs
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
 	if tbl2 then
 		if tbl2[1] then 
 			local j = 4
@@ -1594,7 +1587,9 @@ function DebuffFilter:frameBuffs(scf, uid, tbl1, tbl2, tbl3)
 		end
 	end
 
-
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Main Row Used for Buff 123 and BOL, BOR
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
 	if tbl1 then
 		if tbl1[1] then
 			local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter = unpack(tbl1[1])
@@ -1682,7 +1677,10 @@ function DebuffFilter:frameBuffs(scf, uid, tbl1, tbl2, tbl3)
 		end
 	end
 
-	--[[if tbl3 then
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Used for row 2 Buffs j == 10  to 12 , Mainly Druid Healing 
+	----------------------------------------------------------------------------------------------------------------------------------------------------------
+	--[[if tbl3 then 		
 		if tbl3[1] then 
 			local j = 10
 			for i = 1, 3 do  
@@ -1766,7 +1764,7 @@ function DebuffFilter:BuffFilter(scf, uid)
 		local filter = "HARMFUL"
 		local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura = UnitDebuff(uid, i)
 		if not name or not spellId then break end
-		if row1Buffs[1][name] or row1Buffs[1][spellId] then
+		if row1Buffs[1][name] or row1Buffs[1][spellId] then -- Currently Only Filtering Debuffs for Buff 1 Weakeend Soul
 			tblinsert(buffTableBuff1, {name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, _, Position(row1Buffs[1], name, spellId), i, filter})
 		end
 	end
@@ -1793,7 +1791,7 @@ function DebuffFilter:BuffFilter(scf, uid)
 	self:frameBuffs(scf, uid, buffTableBuff3)
 	self:frameBuffs(scf, uid, buffTableBOR, buffTableBuffs)
 	self:frameBuffs(scf, uid, buffTableBOL)
-	--self:frameBuffs(scf, uid, nil, nil, buffTableBuffs4)
+	--self:frameBuffs(scf, uid, nil, nil, buffTableBuffs4) -- Used for row 2 Buffs j == 10  to 12 , Mainly Druid Healing 
 	self:frameBuffs(scf, uid, MagicCountPlayerTableBuffs)
 
 end
@@ -2144,6 +2142,12 @@ function DebuffFilter:ApplyFrame(f)
 				buffFrame.count:SetJustifyH("RIGHT");
 			end
 		end
+		
+		buffFrame.debuffBorder = buffFrame:CreateTexture(nil, 'OVERLAY')
+		buffFrame.debuffBorder:SetTexture("Interface/Buttons/UI-Debuff-Overlays")
+		buffFrame.debuffBorder:SetTexCoord(0.296875, 0.5703125, 0, 0.515625)
+		buffFrame.debuffBorder:SetAllPoints(buffFrame)
+
 		buffFrame:SetSize(overlaySize, overlaySize) --ensures position is prelocked before showing , avoids the growing of row
 		buffFrame:Hide()
 	end
