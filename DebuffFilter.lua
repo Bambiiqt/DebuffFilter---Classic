@@ -111,7 +111,7 @@ Buffs = {
 	"Mark of the Wild",
 	"Battle Shout",
 	"Focus Magic",
-	"Dark Intent",
+	85768,
 	"Vampiric Embrace",
 	"Arcane Intellect",
 	"Arcane Brilliance",
@@ -1164,6 +1164,12 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 		icon = 236925
 	end
 
+	if spellId == 85509 then --Denounce
+		--icon = 463560
+		--icon = 236922
+		icon = 135950
+	end
+
 	if spellId == 115196 then --Shiv
 		icon = 135428
 	end
@@ -1472,6 +1478,7 @@ end
 
 
 
+
 function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura, destGUID, position, index, filter, BUFFSIZE)
 	local f = scf.f
 	local frameWidth, frameHeight = f:GetSize()
@@ -1517,6 +1524,25 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 			end
 		end
 
+		if spellId == 6788 then 
+			if not buffFrame.backdrop then
+				buffFrame.backdrop = CreateFrame("Frame", nil, nil, "BackdropTemplate")
+				buffFrame.backdrop:SetBackdrop({
+					bgFile =  "Interface\Tooltips\UI-Tooltip-Background",
+					edgeFile = "Interface\Tooltips\UI-Tooltip-Border", edgeSize = 16,
+					tilesize = 16, 
+					insets = {left = 4, right = 4, top = 4, bottom = 4} 
+				})
+			buffFrame.backdrop:SetAllPoints(buffFrame)
+			buffFrame.backdrop:SetSize(128,128)
+			buffFrame.backdrop:SetFrameStrata("HIGH")
+			buffFrame.backdrop:SetFrameLevel(1)
+			buffFrame.backdrop:SetBackdropColor(.7,0,0,0)
+			buffFrame.backdrop:SetBackdropBorderColor(.70,0,0)
+			end
+			buffFrame.backdrop:Show()
+		end
+
 		buffCount(buffFrame, count, backCount)
 
 		buffFrame:SetID(j);
@@ -1539,6 +1565,9 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 			if j == 8 then --BuffOverlay Right 
 				scf.buffFrames[4]:ClearAllPoints() --Cleares SMall Buff Icon Positions
 				scf.buffFrames[4]:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5.5, -6.5)
+			end
+			if buffFrame.backdrop then
+				buffFrame.backdrop:Hide()
 			end
 		end
 	end
