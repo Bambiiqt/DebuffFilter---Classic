@@ -1516,7 +1516,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 
 		if j == 13 then
 			if count == 1 or count == 2 then
-				buffFrame.count:SetTextColor(1, 0 ,0, 1)
+				buffFrame.count:SetTextColor(.8, 0 ,0, 1)
 			elseif count == 3 or count == 4 then 
 				buffFrame.count:SetTextColor(1, 1 ,0, 1)
 			else
@@ -1542,8 +1542,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 		
 		if filter == "HARMFUL" then 
 			local color = DebuffTypeColor[debuffType] or DebuffTypeColor["none"];
-		--	buffFrame.debuff:SetSize(overlaySize, overlaySize) 
-			buffFrame.debuffBorder:SetVertexColor(color.r, color.g, color.b);
+			buffFrame.debuffBorder:SetVertexColor(color.r, color.g, color.b, 1);
 			buffFrame.debuffBorder:Show()
 		else
 			buffFrame.debuffBorder:Hide()
@@ -1554,7 +1553,7 @@ function DebuffFilter:SetBuffIcon(scf, uid, j, name, icon, count, debuffType, du
 		if buffFrame then
 			buffFrame:SetSize(overlaySize*BUFFSIZE,overlaySize*BUFFSIZE);
 			buffFrame:Hide()
-			buffFrame.debuffBorder:Hide()
+			--buffFrame.debuffBorder:Hide()
 			if j == 8 then --BuffOverlay Right 
 				scf.buffFrames[4]:ClearAllPoints() --Cleares SMall Buff Icon Positions
 				scf.buffFrames[4]:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5.5, -6.5)
@@ -2143,7 +2142,7 @@ function DebuffFilter:ApplyFrame(f)
 			end
 		end
 		
-		buffFrame.debuffBorder = buffFrame:CreateTexture(nil, 'OVERLAY')
+		buffFrame.debuffBorder = _G[buffFrame:GetName().."debuffBorder"] or buffFrame:CreateTexture(buffFrame:GetName().."debuffBorder", 'OVERLAY')
 		buffFrame.debuffBorder:SetTexture("Interface/Buttons/UI-Debuff-Overlays")
 		buffFrame.debuffBorder:SetTexCoord(0.296875, 0.5703125, 0, 0.515625)
 		buffFrame.debuffBorder:SetAllPoints(buffFrame)
