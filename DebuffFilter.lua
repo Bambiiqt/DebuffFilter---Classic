@@ -1,5 +1,6 @@
 ﻿
 
+--	local name, _, _, stacks, duration, expirationTime = AuraUtil.FindAuraByName(value.dotname, "target", "PLAYER|HARMFUL" );
 
 local DebuffFilter = CreateFrame("Frame")
 DebuffFilter.cache = {}
@@ -209,8 +210,9 @@ BOR = {
 	"Molten Armor",
 
 	31884, -- Avenging Wrath
-	86698, -- Guardian of Ancinet Kings (Holy)
+	86698, -- Guardian of Ancinet Kings (Ret)
 	86669, -- Guardian of Ancinet Kings (Holy)
+	85696, -- Zealotry
 	31842, -- Divine Favor (Haste & Crit)
 	54428, -- Divine Plea
 	
@@ -350,6 +352,7 @@ local spellIds = {
 	[57723] = "Hide", --Exhaustion
 	[390435] = "Hide", --Exhaustion
 	[57724] = "Hide", --Sated
+	[80354] = "Hide", --Mage Sated
 	[6788] = "Hide", --Weakened Soul
 	[69127] = "Hide", --Weakened Soul
 
@@ -1159,14 +1162,10 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId = UnitAura(uid, index, filter);
 
 	if spellId == 45524 then --Chains of Ice Dk
-		--icon = 463560
-		--icon = 236922
 		icon = 236925
 	end
 
 	if spellId == 85509 then --Denounce
-		--icon = 463560
-		--icon = 236922
 		icon = 135950
 	end
 
@@ -1177,6 +1176,11 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 	if spellId == 285515 then --Frost Shock to Frost Nove
 		icon = 135848
 	end
+
+	if spellId == 7922 then --Charge Stun
+		icon = 132337
+	end
+
 
 	debuffFrame.icon:SetTexture(icon);
 	debuffFrame.icon:SetDesaturated(nil) --Destaurate Icon
@@ -1385,7 +1389,39 @@ function DebuffFilter:UpdateDebuffs(scf, uid)
 			index = index + 1
 		end
 		index = 1
+
+		index = 1
+				-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		--Magic
+		while debuffNum <= DEFAULT_DEBUFF do
+			local debuffName = UnitDebuff(uid, index, filter)
+			if ( debuffName ) then
+				if isMagicPriority(uid, index, filter) and not isBiggestDebuff(uid, index, filter) and not isBiggerDebuff(uid, index, filter) and not isBigDebuff(uid, index, filter) and not CompactUnitFrame_UtilIsBossDebuff(uid, index, filter) and not CompactUnitFrame_UtilIsBossAura(uid, index, filter) and not isWarning(uid, index, filter) and not isPriority(uid, index, filter) then
+					local debuffFrame = scf.debuffFrames[debuffNum]
+					SetdebuffFrame(scf, f, debuffFrame, uid, index, "HARMFUL", DEBUFF)
+					debuffNum = debuffNum + 1
+				end
+			else
+				break
+			end
+			index = index + 1
+		end
 		--Curse & Disease
+		while debuffNum <= DEFAULT_DEBUFF do
+			local debuffName = UnitDebuff(uid, index, filter)
+			if ( debuffName ) then
+				if isDispelPriority(uid, index, filter) and not isBiggestDebuff(uid, index, filter) and not isBiggerDebuff(uid, index, filter) and not isBigDebuff(uid, index, filter) and not CompactUnitFrame_UtilIsBossDebuff(uid, index, filter) and not CompactUnitFrame_UtilIsBossAura(uid, index, filter) and not isWarning(uid, index, filter) and not isPriority(uid, index, filter) and not isMagicPriority(uid, index, filter)  then
+					local debuffFrame = scf.debuffFrames[debuffNum]
+					SetdebuffFrame(scf, f, debuffFrame, uid, index, "HARMFUL", DEBUFF)
+					debuffNum = debuffNum + 1
+				end
+			else
+				break
+			end
+			index = index + 1
+		end
+		-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		--[[Curse & Disease
 		while debuffNum <= DEFAULT_DEBUFF do
 			local debuffName = UnitDebuff(uid, index, filter)
 			if ( debuffName ) then
@@ -1413,7 +1449,8 @@ function DebuffFilter:UpdateDebuffs(scf, uid)
 				break
 			end
 			index = index + 1
-		end
+		end]]
+		-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		index = 1
 		while debuffNum <= DEFAULT_DEBUFF do
 			local debuffName = UnitDebuff(uid, index, filter)
