@@ -209,7 +209,6 @@ BOR = {
 	"Frost Armor",
 	"Molten Armor",
 
-	31884, -- Avenging Wrath
 	86698, -- Guardian of Ancinet Kings (Ret)
 	86669, -- Guardian of Ancinet Kings (Holy)
 	85696, -- Zealotry
