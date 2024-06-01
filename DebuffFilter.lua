@@ -17,9 +17,6 @@ local WARNING = 1.325
 local PRIORITY = 1.225
 local DEBUFF = .925
 
-local class_Name, class_Filename, class_Id = UnitClass("player")
-local UNIT_CLASS = class_Filename
-
 local row1BUFF_SIZE = .95
 local SMALL_BUFF_SIZE = 1
 local BOR_BUFF_SIZE = 1
@@ -113,6 +110,7 @@ Buffs = {
 	"Battle Shout",
 	"Focus Magic",
 	85768,
+	85767,
 	"Vampiric Embrace",
 	"Arcane Intellect",
 	"Arcane Brilliance",
@@ -424,6 +422,9 @@ local spellIds = {
 
 -- data from LoseControl
 local bgBiggerspellIds = { --Always Shows for Pets
+	[49206] = "True", --Ebon Gargoyle
+	[83853] = "True", --Combustion
+	[79140] = "True", --Vendetta
 	
 }
 
@@ -487,6 +488,7 @@ local bgBigspellIds = { --Always Shows for Pets
 
 
 	["Hex"] = "CC",	
+	[51514] = "CC",
 	[58861] = "CC",	 		--Bash (Spirit Wolf)
 	[39796] = "CC",	 	 		--Stoneclaw Stun (Stoneclaw Totem)
 	[77505] = "CC",	 		--Earthquake
@@ -511,8 +513,10 @@ local bgBigspellIds = { --Always Shows for Pets
 	[32752] = "CC",					-- Summoning Disorientation
 
 	[7922] = "CC",					-- Charge (rank 1/2/3)
+	[96273] = "CC",	
 	[20253] = "CC",				-- Intercept
 	[5246] = "CC",				-- Intimidating Shout
+	[20511] = "CC",				-- Intimidating Shout
 	[85388] = "CC",			-- Throwdown
 	[12809] = "CC",			-- Concussion Blow (talent)
 	[46968] = "CC",			-- Shockwave (talent)
@@ -547,13 +551,14 @@ local bgBigspellIds = { --Always Shows for Pets
 	[45334] = "Root",			-- Feral Charge Effect (Feral Charge talent)
 	[19306] = "Root",		-- Counterattack (talent)
 	[19185] = "Root",			-- Entrapment (talent)
+	[64803] = "Root",			-- Entrapment (talent)
 	[4167] = "Root",			-- Web (Spider)
 	[54706] = "Root",			-- Venom Web Spray (Silithid)
 	[50245] = "Root",		-- Pin (Crab)
 	[53148] = "Root",		-- Charge (Bear and Carrion Bird)
 	[25999] = "Root",			-- Boar Charge (Boar)
 	[122] = "Root",				-- Frost Nova 
-	[83302] = "Root",			-- Imp Cone of Cold
+	[83302] = "Root",			-- Imp Cone of ColdU
 	[55080] = "Root",			-- Shattered Barrier (talent)
 	[83073] = "Root",			-- Shattered Barrier (talent)
 	[33395] = "Root",			-- Freeze
@@ -571,42 +576,21 @@ local bgBigspellIds = { --Always Shows for Pets
 	[676] = "Disarm",		-- Disarm
 
 
+
 }
 
 -- data from LoseControl Warning 
 local bgWarningspellIds = { --Always Shows for Pets
+
+	[GetSpellInfo(48181) or 48181] = "True", -- Warlock: Haunt 
 	[GetSpellInfo(30108) or 30108] = "True", -- UA
-	[30108] = "True", -- UA
-	[233490] = "True", -- UA
-	[233497] = "True", -- UA
-	[233496] = "True", -- UA
-	[233498] = "True", -- UA
-	[233499] = "True", -- UA	
-	[342938] = "True", -- UA Shadowlands
-	[316099] = "True", -- UA
-	[43522] = "True", -- UA
-	[34438] = "True", -- UA
-	[34439] = "True", -- UA
-	[251502] = "True", -- UA
-	[65812] = "True", -- UA
-	[35183] = "True", -- UA
-	[211513] = "True", -- UA
-	[285142] = "True", -- UAw
-	[285143] = "True", -- UA
-	[285144] = "True", -- UA
-	[285145] = "True", -- UA
-	[285146] = "True", -- UA
-	[34914] = "True", -- VT
 	[GetSpellInfo(34914) or 34914] = "True", -- VT
 
-	[49206] = "Biggest", --Ebon Gargoyle
-	[83853] = "Biggest", --Combustion
-	[79140] = "Biggest", --Vendetta
+	[88611] = "True",  --SmokeBomb
+
+
 	--[45524] = "Big", --Chains of Ice
-
-	[GetSpellInfo(48181) or 48181] = "Bigger", -- Warlock: Haunt 
-
-}
+ }
 
 
 --[[local function ObjectDNE(guid) --Used for Infrnals and Ele
@@ -989,46 +973,6 @@ end
 local function isBigDebuff(unit, index, filter)
   local name, _, count, _, _, _, source, _, _, spellId = UnitAura(unit, index, "HARMFUL");
 	local inInstance, instanceType = IsInInstance()
-	--[[if (spellId == 325216 or spellId == 386276) then --BoneDust Brew
-		local id, specID
-		if source then
-			if strfind(source, "nameplate") then
-				if (UnitGUID(source) == UnitGUID("arena1")) then id = 1 elseif (UnitGUID(source) == UnitGUID("arena2")) then id = 2 elseif (UnitGUID(source) == UnitGUID("arena3")) then id = 3 end
-			else
-				if strfind(source, "arena1") then id = 1 elseif strfind(source, "arena2") then id = 2 elseif strfind(source, "arena3") then id = 3 end
-			end
-			specID = GetArenaOpponentSpec(id)
-			if specID then
-				if (specID == 270) then --Monk: Brewmaster: 268 / Windwalker: 269 / Mistweaver: 270
-					spellIds[spellId] = "Warning"
-					bgWarningspellIds[spellId] = "True"
-				else
-					spellIds[spellId] = "Big"
-					bgWarningspellIds[spellId] = nil
-				end
-			end
-		end
-	end
-	if (spellId == 391889) then --Adaptive Swarm
-		local id, specID
-		if source then
-			if strfind(source, "nameplate") then
-				if (UnitGUID(source) == UnitGUID("arena1")) then id = 1 elseif (UnitGUID(source) == UnitGUID("arena2")) then id = 2 elseif (UnitGUID(source) == UnitGUID("arena3")) then id = 3 end
-			else
-				if strfind(source, "arena1") then id = 1 elseif strfind(source, "arena2") then id = 2 elseif strfind(source, "arena3") then id = 3 end
-			end
-			specID = GetArenaOpponentSpec(id)
-			if specID then
-				if (specID == 105) then --Druid: Balance: 102 / Feral: 103 / Guardian: 104 /Restoration: 105
-					spellIds[spellId] = "Priority"
-					bgWarningspellIds[spellId] = "True"
-				else
-					spellIds[spellId] = "Warning"
-					bgWarningspellIds[spellId] = nil
-				end
-			end
-		end
-	end]]
 	if (instanceType =="pvp" or strfind(unit,"pet")) and (bgBigspellIds[spellId] or bgBigspellIds[name])then
 		return true
 	elseif (spellIds[spellId] == "Big" or spellIds[name] == "Big")  and instanceType ~="pvp" then
@@ -1059,26 +1003,6 @@ end
 local function isWarning(unit, index, filter)
     local name, _, count, _, _, _, source, _, _, spellId = UnitAura(unit, index, "HARMFUL");
 	local inInstance, instanceType = IsInInstance()
-	--[[if (spellId == 188389) then --Flame Shock
-		local id, specID
-		if source then
-			if strfind(source, "nameplate") then
-				if (UnitGUID(source) == UnitGUID("arena1")) then id = 1 elseif (UnitGUID(source) == UnitGUID("arena2")) then id = 2 elseif (UnitGUID(source) == UnitGUID("arena3")) then id = 3 end
-			else
-				if strfind(source, "arena1") then id = 1 elseif strfind(source, "arena2") then id = 2 elseif strfind(source, "arena3") then id = 3 end
-			end
-			specID = GetArenaOpponentSpec(id)
-			if specID then
-				if (specID == 262) then --Shaman: Elemental: 262 / Enhancement: 263 / Resto 264
-					spellIds[spellId] = "Warning"
-					bgWarningspellIds[spellId] = "True"
-				else
-					spellIds[spellId] = "Priority"
-					bgWarningspellIds[spellId] = nil
-				end
-			end
-		end
-	end]]
 	if (instanceType =="pvp" or strfind(unit,"pet")) and (bgWarningspellIds[spellId] or bgWarningspellIds[name]) and spellId ~= 31117 then
 		return true
 	elseif (spellIds[spellId] == "Warning" or spellIds[name] == "Warning")  and instanceType ~="pvp" then
@@ -1105,20 +1029,32 @@ local function isPriority(unit, index, filter)
 	end
 end
 
-local function isDispelPriority(unit, index, filter)
+local function isMagicPriority(unit, index, filter)
     local  name, _, _, debuffType, _, _, _, _, _, spellId = UnitAura(unit, index, "HARMFUL");
-	if UNIT_CLASS == "PRIEST" and debuffType == "Disease" then
+	local class_Name, UNIT_CLASS, class_Id = UnitClass("player")
+	if (spellIds[spellId] == "Hide" or spellIds[name] == "Hide") then
+		return false
+	elseif UNIT_CLASS == "PRIEST" and debuffType == "Magic" then
 		return true
 	elseif UNIT_CLASS == "MAGE" and debuffType == "Curse" then
+		return true
+	elseif debuffType == "Magic" then
 		return true
 	else
 		return false
 	end
 end
 
-local function isMagicPriority(unit, index, filter)
+local function isDispelPriority(unit, index, filter)
     local  name, _, _, debuffType, _, _, _, _, _, spellId = UnitAura(unit, index, "HARMFUL");
-	if debuffType == "Magic" then
+	local class_Name, UNIT_CLASS, class_Id = UnitClass("player")
+	if (spellIds[spellId] == "Hide" or spellIds[name] == "Hide") then
+		return false
+	elseif UNIT_CLASS == "PRIEST" and debuffType == "Disease" then
+		return true
+	elseif UNIT_CLASS == "MAGE" and debuffType == "Magic" then
+		return true
+	elseif debuffType == "Curse" or debuffType == "Poison" or  debuffType == "Disease" then
 		return true
 	else
 		return false
@@ -1176,7 +1112,7 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 		icon = 135848
 	end
 
-	if spellId == 7922 then --Charge Stun
+	if spellId == 7922 or spellId == 96273 then --Charge Stun
 		icon = 132337
 	end
 
@@ -1388,9 +1324,7 @@ function DebuffFilter:UpdateDebuffs(scf, uid)
 			index = index + 1
 		end
 		index = 1
-
-		index = 1
-				-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		--Magic
 		while debuffNum <= DEFAULT_DEBUFF do
 			local debuffName = UnitDebuff(uid, index, filter)
@@ -1405,6 +1339,7 @@ function DebuffFilter:UpdateDebuffs(scf, uid)
 			end
 			index = index + 1
 		end
+		index = 1
 		--Curse & Disease
 		while debuffNum <= DEFAULT_DEBUFF do
 			local debuffName = UnitDebuff(uid, index, filter)
@@ -2401,8 +2336,6 @@ local function OnEvent(self,event,...)
 	elseif ( event == 'UNIT_PET' ) then
 		self:findFrames(false, event)
 	elseif ( event == 'PLAYER_ENTERING_WORLD' ) then
-		local className, classFilename, classId = UnitClass("player")
-		UNIT_CLASS = classFilename
 		local CRFC =_G["CompactRaidFrameContainer"]
 		--local CPF = _G["CompactPartyFrame"]
 		--CPF:SetScript("OnShow", find_frames)
