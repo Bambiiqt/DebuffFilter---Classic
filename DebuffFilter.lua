@@ -140,7 +140,6 @@ BOR = {
 
 	"Prowl", 
 	"Stealth",
-	51755, --"Camouflage",
 	GetSpellInfo(66), --Invisibility
 	7870, --Succy Pet Invis
 
@@ -188,6 +187,7 @@ BOR = {
 	34471, --The Beast within
 	19574, --Bestial Wraith
 	3045, --Rapid Fire
+	51755, --"Camouflage",
 	--"Aspect of the Viper", 
 	--"Aspect of the Dragonhawk",
 
