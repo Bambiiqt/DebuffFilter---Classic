@@ -243,6 +243,7 @@ BOR = {
 	79464, --Demon Soul Void walker
 	79459, --Demon Soul Imp
 	79462, --Demon Soul Felguard
+	86211, -- SoulSwap
 	"Shadow Ward",
 	"Soul Link",
 
