@@ -361,7 +361,7 @@ local spellIds = {
 	--[45524] = "Bigger", --Chains of Ice
 	[50536] = "Warning", --Unholy Blight
 	[GetSpellInfo(49194) or 49194] = "Warning", --Unholy Blight
-	[GetSpellInfo(55095) or 55095] = "Priority", -- Frost Fever, Ranged & Melle Slowed 20%
+	--[GetSpellInfo(55095) or 55095] = "Priority", -- Frost Fever, Ranged & Melle Slowed 20%
 
 --DRUID
 	[GetSpellInfo(58179) or 58179] = "Big", -- Infected Wounds
@@ -1115,6 +1115,10 @@ local function SetdebuffFrame(scf, f, debuffFrame, uid, index, filter, scale)
 
 	if spellId == 7922 or spellId == 96273 then --Charge Stun
 		icon = 132337
+	end
+
+	if spellId == 5484 then --howl of terror
+		icon = "Interface\\Icons\\ability_warlock_howlofterror"
 	end
 
 
