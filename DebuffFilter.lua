@@ -195,6 +195,7 @@ BOR = {
 	12043, --Presence of Mind (talent)
 	12472, --Icy Veins
 	12042, --Arcane Power
+	48108, --Pyro
 	11426, --Ice Barrier
 	GetSpellInfo(11426), --Ice Barrier
 	543, --Mage Ward
