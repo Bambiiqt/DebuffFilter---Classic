@@ -676,7 +676,7 @@ function DebuffFilter:BOLCLEU()
 			uid = scf.unit
 		end
 		if (sourceGUID ~= nil) then
-		local duration = 10
+		local duration = 10 + 1
 		local expiration = GetTime() + duration
 			if (Barrier[sourceGUID] == nil) then
 				Barrier[sourceGUID] = {}
@@ -915,7 +915,7 @@ function DebuffFilter:DFCLEU()
 	-----------------------------------------------------------------------------------------------------------------
 	if ((event == "SPELL_CAST_SUCCESS") and (spellId == 76577 or spellId == 359053)) then
 		if (sourceGUID ~= nil) then
-		local duration = 6
+		local duration = 5 + 1
 		local expirationTime = GetTime() + duration
 			if not SmokeBombAuras[sourceGUID] then
 				SmokeBombAuras[sourceGUID] = {}
