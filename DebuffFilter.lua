@@ -2315,18 +2315,22 @@ end
 
 hooksecurefunc("CompactRaidFrameContainer_SetGroupMode", function(groupMode)
 	DebuffFilter:findFrames(false, "CompactRaidFrameContainer_SetGroupMode")
+	--print("groupMode")
 end)
 
 hooksecurefunc("CompactRaidFrameContainer_SetFlowFilterFunction", function(flowFilterFunc)
 	DebuffFilter:findFrames(false,"CompactRaidFrameContainer_SetFlowFilterFunction")
+	--print("flowFilterFunc")
 end)
 
 hooksecurefunc("CompactRaidFrameContainer_SetGroupFilterFunction", function(groupFilterFunc)
 	DebuffFilter:findFrames(false, "CompactRaidFrameContainer_SetGroupFilterFunction")
+	--print("groupFilterFunc")
 end)
 
 hooksecurefunc("CompactRaidFrameContainer_SetFlowSortFunction", function(flowSortFunc)
 	DebuffFilter:findFrames(false, "CompactRaidFrameContainer_SetFlowSortFunction")
+	--print("flowSortFunc")
 end)
 
 
