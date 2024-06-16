@@ -541,11 +541,13 @@ local bgBigspellIds = { --Always Shows for Pets
 	[25046] = "Silence",				-- Arcane Torrent (blood elf racial)
 	[28730] = "Silence",				-- Arcane Torrent (blood elf racial)
 	[50613] = "Silence",				-- Arcane Torrent (blood elf racial)
-
+	[69179] = "Silence",				-- Arcane Torrent (blood elf racial)
+	[80483] = "Silence",				-- Arcane Torrent (blood elf racial)
 
 	--[212638 , "RootPhyiscal_Special"},				-- Tracker's Net (pvp honor talent) -- Also -80% hit chance melee & range physical (CC and Root category)
 	[96294] = "Root", 	-- CHains of Ice Root
 	[96293] = "Root",	-- CHains of Ice Root
+	[91807] = "Root",   --Shambling Rush
 	[339] = "Root", 	-- Entangling Roots
 	[19975] = "Root",	-- Entangling Roots (Nature's Grasp spell)
 	[16979] = "Root",	-- Feral Charge Effect (Feral Charge talent)
